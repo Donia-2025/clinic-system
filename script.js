@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         // إرسال البيانات مباشرة إلى ملف Google Sheets عبر Apps Script Web App
-        const response = await fetch('https://script.google.com/macros/s/AKfycbx2IUPPFrhk1Iu7DsqeLpFoe1OMh5gIAUdjaqk94tmACGkpx4Ir7735YXt0lNM3oD-qAg/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyL1iYCA2QCag7lHEyLbetuoWg555eXJ2CZkI4NCGocDsnI3sCd85KR1vCDEDyTaCj4tA/exec', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, phone, country, consultation_type, date, time })
