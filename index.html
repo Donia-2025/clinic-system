@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Hisham Genedy | ENT Specialist & Rhinoplasty Consultant</title>
+  <meta name="description" content="Official Portal for Dr. Hisham Genedy - MD, ENT Specialist, Sleep Surgery & Rhinoplasty Consultant in Egypt & Saudi Arabia. Book appointments online.">
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Music Player Widget -->
+  <div class="music-player" id="musicPlayer" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.9); padding: 8px 14px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px;">
+    <audio id="background-music" loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-toggle-btn" onclick="toggleMusic()" id="musicToggleBtn" style="background:#0e7490; color:white; border:none; width:34px; height:34px; border-radius:50%; cursor:pointer;">
+      <i class="fas fa-play" id="music-icon"></i>
+    </button>
+    <span class="music-title" style="font-size:0.85rem; font-weight:600;" data-en="Clinic Ambient Music" data-ar="موسيقى هادئة">Clinic Music</span>
+  </div>
+
+  <!-- Header & Main Navbar -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="nav-logo" onclick="showPage('home')">
+        <div class="logo-badge"><i class="fas fa-user-md"></i></div>
+        <div>
+          <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</span>
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن وتجميل الأنف">ENT & Rhinoplasty Consultant</div>
+        </div>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#" onclick="showPage('home')" class="active"><i class="fas fa-home"></i> <span data-en="Home" data-ar="الرئيسية">Home</span></a>
+        <a href="#" onclick="showPage('about')"><i class="fas fa-user-md"></i> <span data-en="About" data-ar="عن الطبيب">About</span></a>
+        <a href="#" onclick="showPage('Experience-Publications')"><i class="fas fa-file-medical"></i> <span data-en="Publications" data-ar="الخبرة والمنشورات">Publications</span></a>
+        <a href="#" onclick="showPage('booking')"><i class="fas fa-calendar-check"></i> <span data-en="Booking" data-ar="حجز موعد">Booking</span></a>
+        <a href="#" onclick="showPage('surgery-instructions')"><i class="fas fa-notes-medical"></i> <span data-en="Instructions" data-ar="تعليمات العمليات">Instructions</span></a>
+        <a href="#" onclick="showPage('testimonials')"><i class="fas fa-star"></i> <span data-en="Testimonials" data-ar="آراء المرضى">Testimonials</span></a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-lang" onclick="toggleLanguage()"><i class="fas fa-globe"></i> <span id="langText">عربي</span></button>
+        <a href="#" onclick="showPage('booking')" class="btn-primary btn-book-nav"><i class="fas fa-calendar-alt"></i> <span data-en="Book Now" data-ar="احجز الآن">Book Now</span></a>
+        <button class="hamburger" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Home / Hero Section -->
+    <div id="home" class="container active-page">
+      <div class="hero-wrapper">
+        <div class="hero-content">
+          <div class="hero-badges">
+            <span class="badge-tag"><i class="fas fa-award"></i> <span data-en="MD & Consultant ENT Specialist" data-ar="دكتوراه واستشاري الأنف والأذن والحنجرة">MD & Consultant ENT</span></span>
+            <span class="badge-tag"><i class="fas fa-clock"></i> <span data-en="15+ Years Experience" data-ar="خبرة أكثر من 15 عاماً">15+ Years Experience</span></span>
+          </div>
+
+          <h1 class="hero-title" data-en="Excellence in ENT, Sleep Surgery & Rhinoplasty" data-ar="التميز والاحترافية في جراحات الأنف والأذن والنوم والتجميل">
+            <span data-en="Excellence in ENT," data-ar="التميز في جراحات">Excellence in ENT,</span><br>
+            <span data-en="Sleep Surgery & Rhinoplasty" data-ar="الأنف والأذن والحنجرة والتجميل">Sleep Surgery & Rhinoplasty</span>
+          </h1>
+
+          <p class="hero-subtitle" data-en="Advanced surgical care for Snoring, Sleep Apnea, Septoplasty, and Aesthetic Nose Reshaping in Egypt & Saudi Arabia." data-ar="رعاية جراحية متقدمة لعلاج الشخير، انقطاع التنفس النومي، تعديل الحاجز الأنفي، وتجميل الأنف الجمالي والوظيفي في مصر والسعودية.">
+            Advanced surgical care for Snoring, Sleep Apnea, Septoplasty, and Aesthetic Nose Reshaping in Egypt & Saudi Arabia.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#" onclick="showPage('booking')" class="btn-primary"><i class="fas fa-calendar-alt"></i> <span data-en="Book Appointment" data-ar="احجز موعداً الآن">Book Appointment</span></a>
+            <a href="#" onclick="showPage('surgery-instructions')" class="btn-secondary"><i class="fas fa-notes-medical"></i> <span data-en="Surgery Guides" data-ar="تعليمات العمليات">Surgery Guides</span></a>
+          </div>
+
+          <!-- Social Media Links Bar -->
+          <div class="social-links-bar" style="display: flex; gap: 15px; margin-top: 25px; align-items: center;">
+            <a href="https://www.instagram.com/Dr.HishamENT?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacw8d-zz9VoNHcuJN4C3WYUScOT3FC_yTdMXwCth5Yxq75AXBfUJjUvT9OfVQ_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="Instagram" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQjxxwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="TikTok" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-tiktok"></i></a>
+            <a href="https://api.whatsapp.com/send?phone=966560533284&utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQjyxwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="WhatsApp" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.snapchat.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQj0hwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="Snapchat" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-snapchat"></i></a>
+            <a href="https://m.youtube.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQj3pwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="YouTube" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        
+        <div class="hero-image-container" style="text-align: center;">
+          <div style="position: relative; display: inline-block;">
+            <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="Dr. Hisham Genedy" style="width: 100%; max-width: 380px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 4px solid white;">
+            <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: white; padding: 10px 20px; border-radius: 50px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 10px; width: 85%;">
+              <i class="fas fa-stethoscope" style="color: var(--primary); font-size: 1.4rem;"></i>
+              <div style="text-align: right;">
+                <strong style="display: block; font-size: 0.9rem;" data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن والجراحة">ENT Consultant</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="container hidden">
+      <h2 style="font-size: 2rem; color: var(--dark); margin-bottom: 20px; text-align: center;" data-en="About Dr. Hisham Genedy" data-ar="عن الدكتور هشام جنيدي">About Dr. Hisham Genedy</h2>
+      
+      <div class="glass-card" style="margin-bottom: 30px;">
+        <p style="font-size: 1.05rem; line-height: 1.8;" data-en="Dr. Hisham Genedy is a distinguished ENT Consultant with over 15 years of surgical practice. Holding MD, MSc, and Fellowships in ENT Surgery, he specializes in Rhinoplasty, Obstructive Sleep Apnea Surgery, Endoscopic Sinus Operations, and Microscopic Ear Surgery." data-ar="الدكتور هشام جنيدي استشاري وجراح الأنف والأذن والحنجرة بخبرة واسعة تتجاوز 15 عاماً. حاصل على الدكتوراه والماجستير والزمالات المتخصصة في جراحات تجميل الأنف، علاج الشخير وانقطاع النفس النومي، مناظير الجيوب الأنفية، وجراحات الأذن الدقيقة.">
+          Dr. Hisham Genedy is a distinguished ENT Consultant with over 15 years of surgical practice. Holding MD, MSc, and Fellowships in ENT Surgery.
+        </p>
+      </div>
+
+      <h3 style="font-size: 1.5rem; margin-bottom: 20px;" data-en="Core Specialties" data-ar="التخصصات والخدمات الطبية">Core Specialties</h3>
+      <div class="services-grid">
+        <div class="glass-card service-card">
+          <div class="service-icon"><i class="fas fa-spa"></i></div>
+          <h4 data-en="Rhinoplasty" data-ar="تجميل وتعديل الأنف">Rhinoplasty</h4>
+          <p data-en="Aesthetic and functional nose reconstruction to improve breathing and natural appearance." data-ar="عمليات تجميل وإصلاح شكل الأنف الخارجي مع الحفاظ الكامل وتعديل مجرى التنفس الطبيعي.">Aesthetic and functional nose reconstruction.</p>
+        </div>
+        <div class="glass-card service-card">
+          <div class="service-icon"><i class="fas fa-moon"></i></div>
+          <h4 data-en="Sleep Apnea & Snoring" data-ar="جراحات النوم والشخير">Sleep Apnea & Snoring</h4>
+          <p data-en="Advanced surgical procedures to clear upper airway obstructions and treat snoring." data-ar="علاج انسداد مجرى الهواء العلوي وانقطاع التنفس أثناء النوم بأحدث تقنيات جراحة النوم.">Advanced surgical procedures for sleep apnea.</p>
+        </div>
+        <div class="glass-card service-card">
+          <div class="service-icon"><i class="fas fa-wind"></i></div>
+          <h4 data-en="Endoscopic Sinus Surgery" data-ar="مناظير الجيوب الأنفية">Endoscopic Sinus Surgery</h4>
+          <p data-en="Minimally invasive endoscopic sinusitis and polyp removal." data-ar="علاج الجيوب الأنفية واللحميات المزمنة باستخدام أحدث المناظير الطبية الدقيقة.">Minimally invasive sinus surgery.</p>
+        </div>
+        <div class="glass-card service-card">
+          <div class="service-icon"><i class="fas fa-deaf"></i></div>
+          <h4 data-en="Microscopic Ear Operations" data-ar="جراحات الأذن الميكروسكوبية">Microscopic Ear Operations</h4>
+          <p data-en="Eardrum repair, middle ear reconstruction, and hearing restoration." data-ar="ترميم غشاء الطبلة، جراحات الأذن الوسطى، وعلاج ضعف السمع.">Eardrum repair and ear reconstruction.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience & Publications Section -->
+    <div id="Experience-Publications" class="container hidden">
+      <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;" data-en="Clinical Experience & Gallery" data-ar="الخبرة السريرية ومعرض الصور">Clinical Experience & Gallery</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Explore snapshots of clinical work, publications, and surgical achievements:" data-ar="استعرض صوراً من العمليات، الشهادات والمنشورات العلمية للدكتور:">Explore snapshots of clinical work and surgical achievements:</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;" id="galleryGrid">
+        <img src="https://i.postimg.cc/PqScW0T4/IMG-20250411-WA0014.jpg" alt="Gallery 1" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(0)">
+        <img src="https://i.postimg.cc/7LHdTq8h/IMG-20250411-WA0018.jpg" alt="Gallery 2" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(1)">
+        <img src="https://i.postimg.cc/d3yxK1dH/IMG-20250411-WA0019.jpg" alt="Gallery 3" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(2)">
+        <img src="https://i.postimg.cc/rwcYvqpj/IMG-20250411-WA0024.jpg" alt="Gallery 4" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(3)">
+        <img src="https://i.postimg.cc/662SZHSr/IMG-20250411-WA0022.jpg" alt="Gallery 5" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(4)">
+        <img src="https://i.postimg.cc/65K0QYN5/Whats-App-Image-2025-04-11-at-01-28-57-763a52fa.jpg" alt="Gallery 6" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(5)">
+      </div>
+    </div>
+
+    <!-- Booking Section -->
+    <div id="booking" class="container hidden">
+      <h2 style="font-size: 2rem; margin-bottom: 10px; text-align: center;" data-en="Book an Appointment" data-ar="حجز موعد للكشف">Book an Appointment</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Fill out the details below to reserve your slot directly:" data-ar="أدخل بياناتك وسيتم تسجيل حجزك في العيادة فوراً مع إمكانية التأكيد عبر الواتساب:">Fill out the details below to reserve your slot directly:</p>
+
+      <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="name" data-en="Full Name:" data-ar="الاسم بالكامل:">Full Name:</label>
+            <input type="text" id="name" placeholder="أدخل اسمك الكريم" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" data-en="Phone Number:" data-ar="رقم الهاتف:">Phone Number:</label>
+            <input type="tel" id="phone" placeholder="010XXXXXXXX" required dir="ltr">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+              <label for="country" data-en="Country:" data-ar="الدولة:">Country:</label>
+              <select id="country" onchange="toggleGovernorate()">
+                <option value="egypt">🇪🇬 مصر (Egypt)</option>
+                <option value="saudi">🇸🇦 المملكة العربية السعودية</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="consultation-type" data-en="Consultation Type:" data-ar="نوع الاستشارة:">Consultation Type:</label>
+              <select id="consultation-type">
+                <option value="in_clinic" data-en="In Clinic" data-ar="في العيادة">في العيادة (In Clinic)</option>
+                <option value="online" data-en="Online Consultation" data-ar="استشارة أونلاين">استشارة أونلاين (Online)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+              <label for="date" data-en="Preferred Date:" data-ar="التاريخ المفضل:">Preferred Date:</label>
+              <input type="date" id="date">
+            </div>
+
+            <div class="form-group">
+              <label for="time" data-en="Preferred Time:" data-ar="الوقت المفضل:">Preferred Time:</label>
+              <select id="time">
+                <option value="17:00">05:00 مساءً</option>
+                <option value="18:00">06:00 مساءً</option>
+                <option value="19:00">07:00 مساءً</option>
+                <option value="20:00">08:00 مساءً</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 15px; font-size: 1.1rem;">
+            <i class="fas fa-check-circle"></i> <span data-en="Confirm & Submit Booking" data-ar="تأكيد وتسجيل الحجز">Confirm & Submit Booking</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Surgery Instructions Section -->
+    <div id="surgery-instructions" class="container hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 style="font-size: 1.8rem; margin:0;" data-en="Post-Operative Surgery Guides" data-ar="تعليمات وإرشادات العمليات الجراحية">Post-Operative Surgery Guides</h2>
+        <button onclick="window.print()" class="btn-secondary" style="padding: 8px 18px; border-radius: 8px;">
+          <i class="fas fa-print"></i> <span data-en="Print Instructions" data-ar="طباعة التعليمات">Print Instructions</span>
+        </button>
+      </div>
+
+      <div class="instructions-grid">
+        <div class="glass-card instruction-card">
+          <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 10px;" data-en="Rhinoplasty Instructions" data-ar="تعليمات بعد عملية تجميل الأنف">Rhinoplasty Instructions</h4>
+          <ul style="padding-right: 20px; line-height: 1.8; color: var(--text-main);">
+            <li data-en="Keep head elevated 30-45 degrees while sleeping." data-ar="الاستلقاء مع رفع الرأس بزاوية 30-45 درجة لتخفيف الورم.">الاستلقاء مع رفع الرأس بزاوية 30-45 درجة.</li>
+            <li data-en="Apply cold compresses around eyes for first 48 hours." data-ar="وضع كمادات باردة حول العينين خلال أول 48 ساعة.">وضع كمادات باردة حول العينين خلال أول 48 ساعة.</li>
+            <li data-en="Avoid blowing nose hard or heavy exercise for 3 weeks." data-ar="تجنب التمخط القوي أو الأنشطة المجهدة لمدة 3 أسابيع.">تجنب التمخط القوي أو الرياضة الشاقة لمدة 3 أسابيع.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card instruction-card">
+          <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 10px;" data-en="Sleep & Snoring Surgery" data-ar="تعليمات جراحات النوم والشخير">Sleep & Snoring Surgery</h4>
+          <ul style="padding-right: 20px; line-height: 1.8; color: var(--text-main);">
+            <li data-en="Soft and cold fluids diet for the first week." data-ar="تناول السوائل الباردة والأطعمة اللينة خلال الأسبوع الأول.">تناول السوائل الباردة والأطعمة اللينة خلال الأسبوع الأول.</li>
+            <li data-en="Take prescribed painkillers regularly before meals." data-ar="الالتزام بمسكنات الألم والمضاد الحيوي في المواعيد المحددة.">الالتزام بمسكنات الألم والمضاد الحيوي بانتظام.</li>
+            <li data-en="Avoid hot foods and hot drinks for 10 days." data-ar="تجنب المأكولات والمشروبات الساخنة جداً لمدة 10 أيام.">تجنب المأكولات والمشروبات الساخنة جداً.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div id="testimonials" class="container hidden">
+      <h2 style="font-size: 2rem; margin-bottom: 25px; text-align: center;" data-en="Patient Reviews & Testimonials" data-ar="آراء وتقييمات المرضى">Patient Reviews & Testimonials</h2>
+
+      <div class="glass-card" style="max-width: 600px; margin: 0 auto 35px auto;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 15px;" data-en="Leave a Review" data-ar="شاركنا رأيك وتجربتك">Leave a Review</h3>
+        <form id="reviewForm" onsubmit="handleReviewSubmit(event)">
+          <div class="form-group">
+            <input type="text" id="reviewName" placeholder="اسمك الكريم" required>
+          </div>
+          <div class="form-group">
+            <select id="reviewRating">
+              <option value="5">★★★★★ (5/5) ممتاز جداً</option>
+              <option value="4">★★★★☆ (4/5) جيد جداً</option>
+              <option value="3">★★★☆☆ (3/5) جيد</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea id="reviewComment" rows="3" placeholder="اكتب تعليقك وتجربتك..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+            <i class="fas fa-paper-plane"></i> <span data-en="Submit Feedback" data-ar="إرسال التقييم">Submit Feedback</span>
+          </button>
+        </form>
+      </div>
+
+      <div id="reviewsContainer" class="reviews-grid">
+        <!-- Dynamic Reviews -->
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: var(--dark); color: white; padding: 30px 20px; text-align: center; margin-top: 50px;">
+    <p>&copy; 2026 Dr. Hisham Genedy ENT Clinic. All rights reserved.</p>
+    <p style="margin-top: 5px; font-size: 0.85rem; opacity: 0.7;">Powered by Clinic OS Architecture | Domain Ready & Secure</p>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div id="gallery-lightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; justify-content:center; align-items:center; flex-direction:column;" onclick="closeLightbox()">
+    <img id="lightbox-img" style="max-width:90%; max-height:80%; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+  </div>
+
+  <script>
+    let isArabic = false;
+
+    function showPage(pageId) {
+      document.querySelectorAll('.container').forEach(p => p.classList.add('hidden'));
+      const target = document.getElementById(pageId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('active-page');
+      }
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleLanguage() {
+      isArabic = !isArabic;
+      document.getElementById('langText').textContent = isArabic ? 'English' : 'عربي';
+      document.body.dir = isArabic ? 'rtl' : 'ltr';
+      
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = isArabic ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+      });
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('navLinks').classList.toggle('mobile-active');
+    }
+
+    function toggleGovernorate() {
+      // Dynamic logic handled by script.js
+    }
+
+    function openLightbox(idx) {
+      const modal = document.getElementById('gallery-lightbox');
+      const img = document.getElementById('lightbox-img');
+      const images = document.querySelectorAll('#galleryGrid img');
+      if (images[idx]) {
+        img.src = images[idx].src;
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeLightbox() {
+      document.getElementById('gallery-lightbox').style.display = 'none';
+    }
+
+    function toggleMusic() {
+      const audio = document.getElementById('background-music');
+      const icon = document.getElementById('music-icon');
+      if (audio.paused) {
+        audio.play();
+        icon.className = 'fas fa-pause';
+      } else {
+        audio.pause();
+        icon.className = 'fas fa-play';
+      }
+    }
+
+    async function handleReviewSubmit(e) {
+      e.preventDefault();
+      const patient_name = document.getElementById('reviewName').value;
+      const rating = document.getElementById('reviewRating').value;
+      const comment = document.getElementById('reviewComment').value;
+
+      try {
+        const res = await fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ patient_name, rating, comment })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message);
+          document.getElementById('reviewForm').reset();
+          if (window.loadPatientReviews) window.loadPatientReviews();
+        }
+      } catch (err) {
+        alert('حدث خطأ أثناء حفظ التقييم');
+      }
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

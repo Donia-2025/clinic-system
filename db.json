@@ -1,0 +1,42 @@
+{
+  "appointments": [
+    {
+      "id": 2,
+      "name": "أحمد محمود",
+      "phone": "01012345678",
+      "date": "2026-09-20",
+      "time": "19:00",
+      "country": "egypt",
+      "consultation_type": "in_clinic",
+      "created_at": "2026-09-09T13:43:48.788Z"
+    },
+    {
+      "id": 1,
+      "name": "أحمد محمود",
+      "phone": "01012345678",
+      "date": "2026-09-15",
+      "time": "18:00",
+      "country": "egypt",
+      "consultation_type": "in_clinic",
+      "created_at": "2026-09-09T13:40:30.282Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "patient_name": "محمد علي",
+      "rating": 5,
+      "comment": "دكتور ممتاز جداً وخبرة عالية في جراحة الأنف والجيوب الأنفية. الرعاية كانت ممتازة والتنفس تحسن كثيراً بعد العملية.",
+      "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      "created_at": "2026-09-09T13:40:30.283Z"
+    },
+    {
+      "id": 2,
+      "patient_name": "د. سارة الأحمد",
+      "rating": 5,
+      "comment": "عملت عملية تعديل حاجز أنفي وشخير، النتيجة فوق الممتازة والدكتور متابع خطوة بخطوة بعد العملية.",
+      "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80",
+      "created_at": "2026-09-09T13:40:30.283Z"
+    }
+  ]
+}
