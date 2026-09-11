@@ -1,160 +1,118 @@
-// Dynamic API URL Helper (Works on Localhost, Vercel, Render, and Custom Domain)
-const API_BASE = '/api';
-
-// 1. Handling Appointment Form Submission
 document.addEventListener('DOMContentLoaded', () => {
+  // 1. معالجة نموذج الحجز (Booking Form) وإرساله للسيرفر مع فتح الواتساب
   const bookingForm = document.getElementById('bookingForm');
   if (bookingForm) {
     bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const country = document.getElementById('country').value;
+      const consultation_type = document.getElementById('consultation-type').value;
+      const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+      const time = document.getElementById('time').value;
 
-      const submitBtn = bookingForm.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ الحجز...';
+      if (!name || !phone) {
+        alert('يرجى ادخال الاسم ورقم الهاتف');
+        return;
       }
 
-      const bookingData = {
-        name: document.getElementById('name')?.value || '',
-        phone: document.getElementById('phone')?.value || '',
-        country: document.getElementById('country')?.value || 'egypt',
-        date: document.getElementById('date')?.value || new Date().toISOString().split('T')[0],
-        time: document.getElementById('time')?.value || '18:00',
-        consultation_type: document.getElementById('consultation-type')?.value || 'in_clinic'
-      };
-
       try {
-        const response = await fetch(`${API_BASE}/appointments`, {
+        const response = await fetch('/api/appointments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bookingData)
+          body: JSON.stringify({ name, phone, country, consultation_type, date, time })
         });
-
+        
         const result = await response.json();
-
-        if (response.ok && result.success) {
-          showToast(result.message || 'تم تسجيل حجزك بنجاح!', 'success');
-          
-          // Ask if user wants to notify via WhatsApp as well
-          let whatsappNumber = bookingData.country === 'egypt' ? "201146141421" : "966560533284";
-          let message = `*طلب حجز كشف - د. هشام الجندي*\n\n`;
-          message += `• *الاسم:* ${bookingData.name}\n`;
-          message += `• *الهاتف:* ${bookingData.phone}\n`;
-          message += `• *الدولة:* ${bookingData.country === 'egypt' ? 'مصر' : 'السعودية'}\n`;
-          message += `• *تاريخ الحجز:* ${bookingData.date}\n`;
-          message += `• *نوع الاستشارة:* ${bookingData.consultation_type === 'online' ? 'استشارة أونلاين' : 'في العيادة'}`;
-
-          const encodedMessage = encodeURIComponent(message);
-          window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
-
+        
+        if (result.success) {
+          alert('✅ تم تسجيل حجزك بنجاح في النظام!');
           bookingForm.reset();
+          
+          // فتح الواتساب تلقائياً بعد الحجز
+          const waMessage = `مرحباً دكتور هشام، أرغب في تأكيد حجز موعد:%0Aالاسم: ${encodeURIComponent(name)}%0Aالهاتف: ${encodeURIComponent(phone)}%0Aالتاريخ: ${date} - الوقت: ${time}%0Aالنوع: ${consultation_type}`;
+          window.open(`https://api.whatsapp.com/send?phone=966560533284&text=${waMessage}`, '_blank');
         } else {
-          showToast(result.message || 'تعذر تسجيل الحجز، يرجى المحاولة مرة أخرى.', 'error');
+          alert('❌ حدث خطأ: ' + (result.message || 'فشل الحجز'));
         }
-      } catch (error) {
-        console.error('Booking Error:', error);
-        showToast('حدث خطأ أثناء الاتصال بالسيرفر. جاري التوجيه للواتساب مباشر...', 'warning');
-
-        // Direct fallback to WhatsApp if server offline
-        let whatsappNumber = bookingData.country === 'egypt' ? "201146141421" : "966560533284";
-        let message = `*طلب حجز مباشر - د. هشام الجندي*\n• الاسم: ${bookingData.name}\n• الهاتف: ${bookingData.phone}`;
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
-        }
+      } catch (err) {
+        console.error('Booking error:', err);
+        alert('⚠️ تعذر الاتصال بالسيرفر، تأكد من تشغيل النظام');
       }
     });
   }
 
-  // 2. Load Reviews dynamically from backend API
+  // 2. معالجة نموذج التقييمات (Review Form)
+  const reviewForm = document.getElementById('reviewForm');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const patient_name = document.getElementById('reviewName').value.trim();
+      const rating = document.getElementById('reviewRating').value;
+      const comment = document.getElementById('reviewComment').value.trim();
+
+      if (!patient_name || !comment) {
+        alert('يرجى إدخال الاسم والتعليق');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ patient_name, rating, comment })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message);
+          reviewForm.reset();
+          loadPatientReviews();
+        } else {
+          alert('حدث خطأ أثناء حفظ التقييم');
+        }
+      } catch (err) {
+        alert('حدث خطأ في الاتصال بالسيرفر');
+      }
+    });
+  }
+
+  // تحميل التقييمات تلقائياً عند فتح الصفحة
   loadPatientReviews();
 });
 
-// Load patient reviews from backend REST API
+// دالة لجلب وعرض التقييمات من السيرفر
 async function loadPatientReviews() {
-  const reviewsContainer = document.getElementById('reviewsContainer');
-  if (!reviewsContainer) return;
+  const container = document.getElementById('reviewsContainer');
+  if (!container) return;
 
   try {
-    const response = await fetch(`${API_BASE}/reviews`);
-    if (!response.ok) throw new Error('Network error');
-
-    const reviews = await response.json();
+    const res = await fetch('/api/reviews');
+    const reviews = await res.json();
+    
     if (reviews && reviews.length > 0) {
-      reviewsContainer.innerHTML = '';
-      reviews.forEach(rev => {
-        const stars = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
-        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(rev.patient_name)}&background=0e7490&color=fff`;
-
-        const box = document.createElement('div');
-        box.className = 'testimonial-box glass-card';
-        box.innerHTML = `
-          <div class="review-header">
-            <img src="${rev.imageUrl || defaultAvatar}" alt="${rev.patient_name}" class="review-avatar" onerror="this.src='${defaultAvatar}'">
-            <div>
-              <h4>${rev.patient_name}</h4>
-              <div class="stars-rating">${stars}</div>
-            </div>
+      container.innerHTML = reviews.map(r => `
+        <div class="glass-card" style="padding: 20px; margin-bottom: 15px; border-radius: 12px; background: rgba(255,255,255,0.85);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h4 style="margin: 0; color: var(--primary);">${escapeHtml(r.patient_name)}</h4>
+            <span style="color: #f59e0b; font-size: 0.9rem;">${'★'.repeat(r.rating || 5)}</span>
           </div>
-          <p class="review-comment">"${rev.comment}"</p>
-        `;
-        reviewsContainer.appendChild(box);
-      });
+          <p style="margin: 0; color: var(--text-main); line-height: 1.6;">${escapeHtml(r.comment)}</p>
+          <small style="display: block; margin-top: 10px; color: var(--text-muted); font-size: 0.75rem;">
+            ${new Date(r.created_at || Date.now()).toLocaleDateString('ar-EG')}
+          </small>
+        </div>
+      `).join('');
+    } else {
+      container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">لا توجد تقييمات حتى الآن. كن أول المقيّمين!</p>';
     }
   } catch (err) {
-    console.log('Reviews fetch fallback to embedded list:', err.message);
+    console.error('Error loading reviews:', err);
   }
 }
 
-// Global Toast Notification Helper
-function showToast(message, type = 'info') {
-  let toastContainer = document.getElementById('toastContainer');
-  if (!toastContainer) {
-    toastContainer = document.createElement('div');
-    toastContainer.id = 'toastContainer';
-    toastContainer.style.cssText = `
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    `;
-    document.body.appendChild(toastContainer);
-  }
-
-  const toast = document.createElement('div');
-  const bgColors = {
-    success: '#059669',
-    error: '#dc2626',
-    warning: '#d97706',
-    info: '#0e7490'
-  };
-
-  toast.style.cssText = `
-    background: ${bgColors[type] || bgColors.info};
-    color: white;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    animation: toastIn 0.3s ease forwards;
-  `;
-
-  toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> ${message}`;
-  toastContainer.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.animation = 'toastOut 0.3s ease forwards';
-    setTimeout(() => toast.remove(), 300);
-  }, 4000);
+// حماية النص من الثغرات
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
