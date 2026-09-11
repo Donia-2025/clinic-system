@@ -1,6 +1,6 @@
 // روابط الـ Web Apps الخاصة بجوجل
 const bookingURL = 'https://script.google.com/macros/s/AKfycbzHlGljWOFQZdu4tVIAUPi94hXFd8IFJF8lEwYUgu4-9e1G74qEyKrMN39wyi5O2ApYaQ/exec'; // رابط الحجز
-const reviewScriptURL = 'https://script.google.com/macros/s/AKfycbzlICisyqtUE3bnMszryssAGKzzVflQW-Q4pqZ_3OCubkP86EO7FKBSqDcyzzrgk6yy/exec'; // رابط الآراء والتقييمات
+const reviewScriptURL = 'https://script.google.com/macros/s/AKfycbxWYwAhWlCfH41VR-ogi3viZtFfNNHK9R7PM9-bWGF5bf4uCzkPLVYnaclfUkJfuYeZ/exec'; // رابط الآراء والتقييمات
 
 document.addEventListener('DOMContentLoaded', () => {
   
