@@ -1,5 +1,4 @@
 const express = require('express');
-const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
@@ -14,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'Frontend')));
 
-// Local JSON Storage Fallback configuration
+// Local JSON Storage Configuration (Fast, Free, & 100% Reliable on Vercel)
 const DATA_DIR = path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 
@@ -75,89 +74,6 @@ function writeJsonDB(data) {
   }
 }
 
-// Database Connection Manager (MySQL with auto fallback to JSON DB)
-let useMySQL = false;
-
-const dbConfig = {
-  host: process.env.MYSQL_HOST || 'localhost',
-  user: process.env.MYSQL_USER || 'root',
-  password: process.env.MYSQL_PASSWORD || '',
-  database: process.env.MYSQL_DATABASE || 'clinic_booking_db',
-  port: process.env.MYSQL_PORT || 3306,
-  connectTimeout: 3000
-};
-
-const pool = mysql.createPool({ ...dbConfig, waitForConnections: true, connectionLimit: 10 });
-
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.log('ℹ️ MySQL database not reachable. Running on built-in resilient JSON Database.');
-    useMySQL = false;
-  } else {
-    console.log('✅ Connected successfully to MySQL Database!');
-    useMySQL = true;
-    connection.release();
-    
-    // Auto-create MySQL Tables if they don't exist
-    const createAppointmentsTable = `
-      CREATE TABLE IF NOT EXISTS appointments (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        phone VARCHAR(50) NOT NULL,
-        date VARCHAR(50) NOT NULL,
-        time VARCHAR(50) NOT NULL,
-        country VARCHAR(50) DEFAULT 'egypt',
-        consultation_type VARCHAR(50) DEFAULT 'in_clinic',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-    `;
-
-    const createReviewsTable = `
-      CREATE TABLE IF NOT EXISTS reviews (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        patient_name VARCHAR(255) NOT NULL,
-        rating INT DEFAULT 5,
-        comment TEXT NOT NULL,
-        imageUrl VARCHAR(500) DEFAULT '',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-    `;
-
-    pool.query(createAppointmentsTable, (err) => {
-      if (err) console.error('Error creating appointments table:', err.message);
-      else {
-        // Upgrade existing table columns if missing
-        pool.query("SHOW COLUMNS FROM appointments", (err, rows) => {
-          if (!err && rows) {
-            const cols = rows.map(r => r.Field.toLowerCase());
-            if (!cols.includes('name')) pool.query("ALTER TABLE appointments ADD COLUMN name VARCHAR(255) DEFAULT ''");
-            if (!cols.includes('phone')) pool.query("ALTER TABLE appointments ADD COLUMN phone VARCHAR(50) DEFAULT ''");
-            if (!cols.includes('date')) pool.query("ALTER TABLE appointments ADD COLUMN date VARCHAR(50) DEFAULT ''");
-            if (!cols.includes('time')) pool.query("ALTER TABLE appointments ADD COLUMN time VARCHAR(50) DEFAULT ''");
-            if (!cols.includes('country')) pool.query("ALTER TABLE appointments ADD COLUMN country VARCHAR(50) DEFAULT 'egypt'");
-            if (!cols.includes('consultation_type')) pool.query("ALTER TABLE appointments ADD COLUMN consultation_type VARCHAR(50) DEFAULT 'in_clinic'");
-          }
-        });
-      }
-    });
-
-    pool.query(createReviewsTable, (err) => {
-      if (err) console.error('Error creating reviews table:', err.message);
-      else {
-        pool.query("SHOW COLUMNS FROM reviews", (err, rows) => {
-          if (!err && rows) {
-            const cols = rows.map(r => r.Field.toLowerCase());
-            if (!cols.includes('patient_name')) pool.query("ALTER TABLE reviews ADD COLUMN patient_name VARCHAR(255) DEFAULT ''");
-            if (!cols.includes('comment')) pool.query("ALTER TABLE reviews ADD COLUMN comment TEXT");
-            if (!cols.includes('rating')) pool.query("ALTER TABLE reviews ADD COLUMN rating INT DEFAULT 5");
-            if (!cols.includes('imageurl')) pool.query("ALTER TABLE reviews ADD COLUMN imageUrl VARCHAR(500) DEFAULT ''");
-          }
-        });
-      }
-    });
-  }
-});
-
 // --- API ENDPOINTS ---
 
 // Health check endpoint
@@ -165,7 +81,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     system: 'Dr. Hisham Genedy Clinic System',
-    db_type: useMySQL ? 'MySQL' : 'JSON Storage (Production Resilient)',
+    db_type: 'JSON Storage (High Performance & Free)',
     timestamp: new Date().toISOString()
   });
 });
@@ -186,61 +102,26 @@ app.post('/api/appointments', (req, res) => {
     consultation_type: consultation_type || 'in_clinic'
   };
 
-  if (useMySQL) {
-    const sql = 'INSERT INTO appointments (name, phone, date, time, country, consultation_type) VALUES (?, ?, ?, ?, ?, ?)';
-    pool.query(sql, [apptData.name, apptData.phone, apptData.date, apptData.time, apptData.country, apptData.consultation_type], (err, result) => {
-      if (err) {
-        console.error('MySQL Insert Error:', err.message);
-        // Fallback to JSON DB if MySQL query fails
-        const db = readJsonDB();
-        const newId = db.appointments.length > 0 ? Math.max(...db.appointments.map(a => a.id || 0)) + 1 : 1;
-        db.appointments.unshift({ id: newId, ...apptData, created_at: new Date().toISOString() });
-        writeJsonDB(db);
-        return res.json({ success: true, message: 'تم تسجيل حجزك بنجاح!', id: newId });
-      }
-      res.json({ success: true, message: 'تم تسجيل حجزك بنجاح!', id: result.insertId });
-    });
-  } else {
-    const db = readJsonDB();
-    const newId = db.appointments.length > 0 ? Math.max(...db.appointments.map(a => a.id || 0)) + 1 : 1;
-    const newAppt = { id: newId, ...apptData, created_at: new Date().toISOString() };
-    db.appointments.unshift(newAppt);
-    writeJsonDB(db);
-    res.json({ success: true, message: 'تم تسجيل حجزك بنجاح!', id: newId });
-  }
+  const db = readJsonDB();
+  const newId = db.appointments.length > 0 ? Math.max(...db.appointments.map(a => a.id || 0)) + 1 : 1;
+  const newAppt = { id: newId, ...apptData, created_at: new Date().toISOString() };
+  db.appointments.unshift(newAppt);
+  writeJsonDB(db);
+  
+  res.json({ success: true, message: 'تم تسجيل حجزك بنجاح!', id: newId });
 });
 
 app.get('/api/appointments', (req, res) => {
-  if (useMySQL) {
-    const sql = 'SELECT * FROM appointments ORDER BY id DESC';
-    pool.query(sql, (err, results) => {
-      if (err) {
-        const db = readJsonDB();
-        return res.json(db.appointments || []);
-      }
-      res.json(results);
-    });
-  } else {
-    const db = readJsonDB();
-    res.json(db.appointments || []);
-  }
+  const db = readJsonDB();
+  res.json(db.appointments || []);
 });
 
 app.delete('/api/appointments/:id', (req, res) => {
   const id = req.params.id;
-  if (useMySQL) {
-    pool.query('DELETE FROM appointments WHERE id = ?', [id], (err, result) => {
-      const db = readJsonDB();
-      db.appointments = db.appointments.filter(a => String(a.id) !== String(id));
-      writeJsonDB(db);
-      res.json({ success: true, message: 'تم حذف الحجز بنجاح' });
-    });
-  } else {
-    const db = readJsonDB();
-    db.appointments = db.appointments.filter(a => String(a.id) !== String(id));
-    writeJsonDB(db);
-    res.json({ success: true, message: 'تم حذف الحجز بنجاح' });
-  }
+  const db = readJsonDB();
+  db.appointments = db.appointments.filter(a => String(a.id) !== String(id));
+  writeJsonDB(db);
+  res.json({ success: true, message: 'تم حذف الحجز بنجاح' });
 });
 
 // 2. Reviews APIs
@@ -257,59 +138,26 @@ app.post('/api/reviews', (req, res) => {
     imageUrl: imageUrl || ''
   };
 
-  if (useMySQL) {
-    const sql = 'INSERT INTO reviews (patient_name, comment, rating, imageUrl) VALUES (?, ?, ?, ?)';
-    pool.query(sql, [reviewData.patient_name, reviewData.comment, reviewData.rating, reviewData.imageUrl], (err, result) => {
-      if (err) {
-        const db = readJsonDB();
-        const newId = db.reviews.length > 0 ? Math.max(...db.reviews.map(r => r.id || 0)) + 1 : 1;
-        db.reviews.unshift({ id: newId, ...reviewData, created_at: new Date().toISOString() });
-        writeJsonDB(db);
-        return res.json({ success: true, message: 'شكراً لتقييمك ومشاركة تجربتك!' });
-      }
-      res.json({ success: true, message: 'شكراً لتقييمك ومشاركة تجربتك!' });
-    });
-  } else {
-    const db = readJsonDB();
-    const newId = db.reviews.length > 0 ? Math.max(...db.reviews.map(r => r.id || 0)) + 1 : 1;
-    const newReview = { id: newId, ...reviewData, created_at: new Date().toISOString() };
-    db.reviews.unshift(newReview);
-    writeJsonDB(db);
-    res.json({ success: true, message: 'شكراً لتقييمك ومشاركة تجربتك!' });
-  }
+  const db = readJsonDB();
+  const newId = db.reviews.length > 0 ? Math.max(...db.reviews.map(r => r.id || 0)) + 1 : 1;
+  const newReview = { id: newId, ...reviewData, created_at: new Date().toISOString() };
+  db.reviews.unshift(newReview);
+  writeJsonDB(db);
+  
+  res.json({ success: true, message: 'شكراً لتقييمك ومشاركة تجربتك!' });
 });
 
 app.get('/api/reviews', (req, res) => {
-  if (useMySQL) {
-    const sql = 'SELECT * FROM reviews ORDER BY id DESC';
-    pool.query(sql, (err, results) => {
-      if (err) {
-        const db = readJsonDB();
-        return res.json(db.reviews || []);
-      }
-      res.json(results);
-    });
-  } else {
-    const db = readJsonDB();
-    res.json(db.reviews || []);
-  }
+  const db = readJsonDB();
+  res.json(db.reviews || []);
 });
 
 app.delete('/api/reviews/:id', (req, res) => {
   const id = req.params.id;
-  if (useMySQL) {
-    pool.query('DELETE FROM reviews WHERE id = ?', [id], (err, result) => {
-      const db = readJsonDB();
-      db.reviews = db.reviews.filter(r => String(r.id) !== String(id));
-      writeJsonDB(db);
-      res.json({ success: true, message: 'تم حذف التقييم بنجاح' });
-    });
-  } else {
-    const db = readJsonDB();
-    db.reviews = db.reviews.filter(r => String(r.id) !== String(id));
-    writeJsonDB(db);
-    res.json({ success: true, message: 'تم حذف التقييم بنجاح' });
-  }
+  const db = readJsonDB();
+  db.reviews = db.reviews.filter(r => String(r.id) !== String(id));
+  writeJsonDB(db);
+  res.json({ success: true, message: 'تم حذف التقييم بنجاح' });
 });
 
 // Fallback route to serve index.html for single-page routing (Express 5 compatible)
