@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. معالجة نموذج الحجز (Booking Form) وإرساله للسيرفر مع فتح الواتساب
   const bookingForm = document.getElementById('bookingForm');
   if (bookingForm) {
     bookingForm.addEventListener('submit', async (e) => {
@@ -18,101 +17,71 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const response = await fetch('/api/appointments', {
+        // إرسال البيانات مباشرة إلى ملف Google Sheets عبر Apps Script Web App
+        const response = await fetch('https://script.google.com/macros/s/AKfycbx2IUPPFrhk1Iu7DsqeLpFoe1OMh5gIAUdjaqk94tmACGkpx4Ir7735YXt0lNM3oD-qAg/exec', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, phone, country, consultation_type, date, time })
         });
         
-        const result = await response.json();
-        
-        if (result.success) {
-          alert('✅ تم تسجيل حجزك بنجاح في النظام!');
+        if (response.ok) {
+          alert('✅ تم تسجيل حجزك بنجاح وإرساله إلى جدول العيادة!');
           bookingForm.reset();
           
-          // فتح الواتساب تلقائياً بعد الحجز
-          const waMessage = `مرحباً دكتور هشام، أرغب في تأكيد حجز موعد:%0Aالاسم: ${encodeURIComponent(name)}%0Aالهاتف: ${encodeURIComponent(phone)}%0Aالتاريخ: ${date} - الوقت: ${time}%0Aالنوع: ${consultation_type}`;
+          // فتح الواتساب تلقائياً لتأكيد الحجز مع العيادة
+          const waMessage = `مرحباً، أرغب في تأكيد حجز موعد:%0Aالاسم: ${encodeURIComponent(name)}%0Aالهاتف: ${encodeURIComponent(phone)}%0Aالتاريخ: ${date} - الوقت: ${time}%0Aالنوع: ${consultation_type}`;
           window.open(`https://api.whatsapp.com/send?phone=966560533284&text=${waMessage}`, '_blank');
         } else {
-          alert('❌ حدث خطأ: ' + (result.message || 'فشل الحجز'));
+          alert('❌ حدث خطأ أثناء تسجيل الحجز، حاول مرة أخرى.');
         }
       } catch (err) {
         console.error('Booking error:', err);
-        alert('⚠️ تعذر الاتصال بالسيرفر، تأكد من تشغيل النظام');
+        alert('⚠️ تعذر الاتصال بقاعدة البيانات.');
       }
     });
   }
 
-  // 2. معالجة نموذج التقييمات (Review Form)
-  const reviewForm = document.getElementById('reviewForm');
-  if (reviewForm) {
-    reviewForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const patient_name = document.getElementById('reviewName').value.trim();
-      const rating = document.getElementById('reviewRating').value;
-      const comment = document.getElementById('reviewComment').value.trim();
-
-      if (!patient_name || !comment) {
-        alert('يرجى إدخال الاسم والتعليق');
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/reviews', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ patient_name, rating, comment })
-        });
-        const data = await res.json();
-        if (data.success) {
-          alert(data.message);
-          reviewForm.reset();
-          loadPatientReviews();
-        } else {
-          alert('حدث خطأ أثناء حفظ التقييم');
-        }
-      } catch (err) {
-        alert('حدث خطأ في الاتصال بالسيرفر');
-      }
-    });
-  }
-
-  // تحميل التقييمات تلقائياً عند فتح الصفحة
+  // تحميل وعرض التقييمات المخزنة محلياً
   loadPatientReviews();
 });
 
-// دالة لجلب وعرض التقييمات من السيرفر
-async function loadPatientReviews() {
+function loadPatientReviews() {
   const container = document.getElementById('reviewsContainer');
   if (!container) return;
-
-  try {
-    const res = await fetch('/api/reviews');
-    const reviews = await res.json();
-    
-    if (reviews && reviews.length > 0) {
-      container.innerHTML = reviews.map(r => `
-        <div class="glass-card" style="padding: 20px; margin-bottom: 15px; border-radius: 12px; background: rgba(255,255,255,0.85);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h4 style="margin: 0; color: var(--primary);">${escapeHtml(r.patient_name)}</h4>
-            <span style="color: #f59e0b; font-size: 0.9rem;">${'★'.repeat(r.rating || 5)}</span>
-          </div>
-          <p style="margin: 0; color: var(--text-main); line-height: 1.6;">${escapeHtml(r.comment)}</p>
-          <small style="display: block; margin-top: 10px; color: var(--text-muted); font-size: 0.75rem;">
-            ${new Date(r.created_at || Date.now()).toLocaleDateString('ar-EG')}
-          </small>
-        </div>
-      `).join('');
-    } else {
-      container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">لا توجد تقييمات حتى الآن. كن أول المقيّمين!</p>';
-    }
-  } catch (err) {
-    console.error('Error loading reviews:', err);
+  
+  const savedReviews = JSON.parse(localStorage.getItem('clinic_reviews') || '[]');
+  if (savedReviews.length > 0) {
+    container.innerHTML = savedReviews.map(r => `
+      <div class="glass-card" style="padding: 20px; margin-bottom: 15px; border-radius: 12px; background: rgba(255,255,255,0.85);">
+        <h4 style="margin: 0 0 5px 0; color: var(--primary);">${escapeHtml(r.name)}</h4>
+        <span style="color: #f59e0b;">${'★'.repeat(r.rating)}</span>
+        <p style="margin: 10px 0 0 0; color: var(--text-main);">${escapeHtml(r.comment)}</p>
+      </div>
+    `).join('');
+  } else {
+    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">كن أول من يشاركنا رأيه!</p>';
   }
 }
 
-// حماية النص من الثغرات
+// نموذج التقييم لتخزينه وعرضه فوراً
+document.addEventListener('submit', (e) => {
+  if (e.target && e.target.id === 'reviewForm') {
+    e.preventDefault();
+    const name = document.getElementById('reviewName').value.trim();
+    const rating = document.getElementById('reviewRating').value;
+    const comment = document.getElementById('reviewComment').value.trim();
+
+    const reviews = JSON.parse(localStorage.getItem('clinic_reviews') || '[]');
+    reviews.unshift({ name, rating, comment, date: new Date().toLocaleDateString() });
+    localStorage.setItem('clinic_reviews', JSON.stringify(reviews));
+
+    alert('شكراً لك! تم إضافة تقييمك بنجاح.');
+    e.target.reset();
+    loadPatientReviews();
+  }
+});
+
 function escapeHtml(str) {
   if (!str) return '';
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
