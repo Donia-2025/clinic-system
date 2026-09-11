@@ -108,6 +108,9 @@ app.post('/api/appointments', (req, res) => {
   db.appointments.unshift(newAppt);
   writeJsonDB(db);
   
+  // تتبع الحجز في الـ Logs للتأكد من التسجيل
+  console.log("📌 تم تسجيل حجز جديد بنجاح:", newAppt);
+
   res.json({ success: true, message: 'تم تسجيل حجزك بنجاح!', id: newId });
 });
 
@@ -144,6 +147,9 @@ app.post('/api/reviews', (req, res) => {
   db.reviews.unshift(newReview);
   writeJsonDB(db);
   
+  // تتبع التقييم في الـ Logs للتأكد من التسجيل
+  console.log("⭐ تم تسجيل تقييم جديد بنجاح:", newReview);
+
   res.json({ success: true, message: 'شكراً لتقييمك ومشاركة تجربتك!' });
 });
 
