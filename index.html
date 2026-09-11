@@ -78,11 +78,11 @@
 
           <!-- Social Media Links Bar -->
           <div class="social-links-bar" style="display: flex; gap: 15px; margin-top: 25px; align-items: center;">
-            <a href="https://www.instagram.com/Dr.HishamENT?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacw8d-zz9VoNHcuJN4C3WYUScOT3FC_yTdMXwCth5Yxq75AXBfUJjUvT9OfVQ_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="Instagram" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQjxxwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="TikTok" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-tiktok"></i></a>
-            <a href="https://api.whatsapp.com/send?phone=966560533284&utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQjyxwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="WhatsApp" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.snapchat.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQj0hwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="Snapchat" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-snapchat"></i></a>
-            <a href="https://m.youtube.com/%40drhishament?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAUQj3pwZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABpzDx37PP1Wg0dy4k3gLdZhRJw5PcUL_JN0xfAK2HljGrvkBcF9QmNS9P059V_aem_KRXcV_yUzg9XgreTw3dHsw" target="_blank" title="YouTube" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/Dr.HishamENT" target="_blank" title="Instagram" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@drhishament" target="_blank" title="TikTok" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-tiktok"></i></a>
+            <a href="https://api.whatsapp.com/send?phone=966560533284" target="_blank" title="WhatsApp" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.snapchat.com/@drhishament" target="_blank" title="Snapchat" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-snapchat"></i></a>
+            <a href="https://m.youtube.com/@drhishament" target="_blank" title="YouTube" style="color: var(--primary); font-size: 1.3rem;"><i class="fab fa-youtube"></i></a>
           </div>
         </div>
         
@@ -171,7 +171,7 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div class="form-group">
               <label for="country" data-en="Country:" data-ar="الدولة:">Country:</label>
-              <select id="country" onchange="toggleGovernorate()">
+              <select id="country">
                 <option value="egypt">🇪🇬 مصر (Egypt)</option>
                 <option value="saudi">🇸🇦 المملكة العربية السعودية</option>
               </select>
@@ -246,7 +246,7 @@
 
       <div class="glass-card" style="max-width: 600px; margin: 0 auto 35px auto;">
         <h3 style="font-size: 1.2rem; margin-bottom: 15px;" data-en="Leave a Review" data-ar="شاركنا رأيك وتجربتك">Leave a Review</h3>
-        <form id="reviewForm" onsubmit="handleReviewSubmit(event)">
+        <form id="reviewForm">
           <div class="form-group">
             <input type="text" id="reviewName" placeholder="اسمك الكريم" required>
           </div>
@@ -310,10 +310,6 @@
       document.getElementById('navLinks').classList.toggle('mobile-active');
     }
 
-    function toggleGovernorate() {
-      // Dynamic logic handled by script.js
-    }
-
     function openLightbox(idx) {
       const modal = document.getElementById('gallery-lightbox');
       const img = document.getElementById('lightbox-img');
@@ -337,29 +333,6 @@
       } else {
         audio.pause();
         icon.className = 'fas fa-play';
-      }
-    }
-
-    async function handleReviewSubmit(e) {
-      e.preventDefault();
-      const patient_name = document.getElementById('reviewName').value;
-      const rating = document.getElementById('reviewRating').value;
-      const comment = document.getElementById('reviewComment').value;
-
-      try {
-        const res = await fetch('/api/reviews', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ patient_name, rating, comment })
-        });
-        const data = await res.json();
-        if (data.success) {
-          alert(data.message);
-          document.getElementById('reviewForm').reset();
-          if (window.loadPatientReviews) window.loadPatientReviews();
-        }
-      } catch (err) {
-        alert('حدث خطأ أثناء حفظ التقييم');
       }
     }
   </script>
