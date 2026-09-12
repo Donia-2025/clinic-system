@@ -443,7 +443,7 @@ header {
   box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.15);
 }
 
-/* Responsive Breakpoints */
+/* Responsive Breakpoints & Mobile Menu Fixes */
 @media (max-width: 900px) {
   .hero-wrapper {
     grid-template-columns: 1fr;
@@ -454,6 +454,7 @@ header {
     justify-content: center;
   }
 
+  /* تم ضبط القائمة لتبدأ من اليمين بشكل صحيح وتدعم اللغتين مع تمرير داخلي إذا زاد عدد الأقسام */
   .nav-links {
     position: fixed;
     top: 70px;
@@ -466,10 +467,22 @@ header {
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
     align-items: stretch;
+    overflow-y: auto;
+    z-index: 1000;
   }
 
   .nav-links.mobile-active {
     right: 0;
+  }
+
+  /* دعم اتجاه اللغة الإنجليزية في الموبايل لو تم تفعيل الـ LTR */
+  body[dir="ltr"] .nav-links {
+    right: auto;
+    left: -100%;
+  }
+
+  body[dir="ltr"] .nav-links.mobile-active {
+    left: 0;
   }
 
   .hamburger {
