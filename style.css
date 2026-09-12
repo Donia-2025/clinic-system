@@ -693,7 +693,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   .container {
     box-shadow: none !important;
     border: none !important;
-    width: 100% !important;
+    width: 100% | !important;
     margin: 0 !important;
     padding: 0 !important;
   }
