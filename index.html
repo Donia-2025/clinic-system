@@ -28,7 +28,9 @@
   <header>
     <div class="nav-container">
       <a href="#" class="nav-logo" onclick="showPage('home')">
-        <div class="logo-badge"><i class="fas fa-user-md"></i></div>
+        <div class="logo-badge">
+          <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="Dr. Hisham Genedy">
+        </div>
         <div>
           <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</span>
           <div class="nav-logo-sub" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن وتجميل الأنف">ENT & Rhinoplasty Consultant</div>
@@ -155,7 +157,7 @@
       </div>
     </div>
 
-    <!-- Certificates Section (New) -->
+    <!-- Certificates Section -->
     <div id="certificates" class="container hidden">
       <h2 class="section-title" data-en="Certificates & Credentials" data-ar="الشهادات والاعتمادات الطبية">Certificates & Credentials</h2>
       <p class="section-subtitle" data-en="Professional medical board certifications and academic degrees:" data-ar="الشهادات الأكاديمية والمهنية واعتمادات الجراحة:">Professional medical board certifications and academic degrees:</p>
@@ -174,7 +176,7 @@
       </div>
     </div>
 
-    <!-- Photos Section (New) -->
+    <!-- Photos Section -->
     <div id="photos" class="container hidden">
       <h2 class="section-title" data-en="Clinical Gallery & Photos" data-ar="معرض الصور والعيادة">Clinical Gallery & Photos</h2>
       <p class="section-subtitle" data-en="Snapshots of clinical work, setup, and medical procedures:" data-ar="صور توثيقية للعمليات، العيادة، والأنشطة الطبية:">Snapshots of clinical work, setup, and medical procedures:</p>
@@ -320,6 +322,25 @@
     <img id="lightbox-img">
   </div>
 
+  <style>
+    /* تنسيق الصورة داخل المربع الزيتي للوجو العلوي */
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1b382b; /* لون خلفية زيتي احتياطي */
+    }
+    .logo-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+
   <script>
     let isArabic = false;
 
@@ -332,7 +353,6 @@
       }
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       
-      // إغلاق القائمة الجانبية تلقائياً على الموبايل عند اختيار صفحة
       document.getElementById('navLinks').classList.remove('mobile-active');
       
       window.scrollTo({ top: 0, behavior: 'smooth' });
