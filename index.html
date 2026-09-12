@@ -36,9 +36,11 @@
       </a>
 
       <div class="nav-links" id="navLinks">
-        <a href="#" onclick="showPage('home')" class="active"><i class="fas fa-home"></i> <span data-en="Home" data-ar="الرئيسية">Home</span></a>
+        <a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> <span data-en="Home" data-ar="الرئيسية">Home</span></a>
         <a href="#" onclick="showPage('about')"><i class="fas fa-user-md"></i> <span data-en="About" data-ar="عن الطبيب">About</span></a>
         <a href="#" onclick="showPage('Experience-Publications')"><i class="fas fa-file-medical"></i> <span data-en="Publications" data-ar="الخبرة والمنشورات">Publications</span></a>
+        <a href="#" onclick="showPage('certificates')"><i class="fas fa-certificate"></i> <span data-en="Certificates" data-ar="الشهادات">Certificates</span></a>
+        <a href="#" onclick="showPage('photos')"><i class="fas fa-images"></i> <span data-en="Photos" data-ar="الصور">Photos</span></a>
         <a href="#" onclick="showPage('booking')"><i class="fas fa-calendar-check"></i> <span data-en="Booking" data-ar="حجز موعد">Booking</span></a>
         <a href="#" onclick="showPage('surgery-instructions')"><i class="fas fa-notes-medical"></i> <span data-en="Instructions" data-ar="تعليمات العمليات">Instructions</span></a>
         <a href="#" onclick="showPage('testimonials')"><i class="fas fa-star"></i> <span data-en="Testimonials" data-ar="آراء المرضى">Testimonials</span></a>
@@ -138,8 +140,42 @@
 
     <!-- Experience & Publications Section -->
     <div id="Experience-Publications" class="container hidden">
-      <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;" data-en="Clinical Experience & Gallery" data-ar="الخبرة السريرية ومعرض الصور">Clinical Experience & Gallery</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Explore snapshots of clinical work, publications, and surgical achievements:" data-ar="استعرض صوراً من العمليات، الشهادات والمنشورات العلمية للدكتور:">Explore snapshots of clinical work and surgical achievements:</p>
+      <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;" data-en="Clinical Publications" data-ar="المنشورات والأبحاث العلمية">Clinical Publications</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Explore professional papers and clinical publications:" data-ar="استعراض الأبحاث الطبية والمنشورات العلمية للدكتور:">Explore professional papers and clinical publications:</p>
+      
+      <div class="glass-card" style="padding: 20px; margin-bottom: 15px;">
+        <h4 style="color: var(--primary);">Advanced Techniques in Functional Rhinoplasty</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Published in International ENT Medical Journal</p>
+      </div>
+      <div class="glass-card" style="padding: 20px;">
+        <h4 style="color: var(--primary);">Management of Obstructive Sleep Apnea in Adults</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Clinical Research & Sleep Surgery Review</p>
+      </div>
+    </div>
+
+    <!-- Certificates Section (New) -->
+    <div id="certificates" class="container hidden">
+      <h2 style="font-size: 2rem; margin-bottom: 10px; text-align: center;" data-en="Certificates & Credentials" data-ar="الشهادات والاعتمادات الطبية">Certificates & Credentials</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Professional medical board certifications and academic degrees:" data-ar="الشهادات الأكاديمية والمهنية واعتمادات الجراحة:">Professional medical board certifications and academic degrees:</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+        <div class="glass-card" style="text-align: center; padding: 20px;">
+          <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-award"></i></div>
+          <h4 data-en="MD in ENT Surgery" data-ar="دكتوراه جراحة الأنف والأذن والحنجرة">MD in ENT Surgery</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;" data-en="Advanced Doctorate Degree" data-ar="درجة الدكتوراه المتقدمة">Advanced Doctorate Degree</p>
+        </div>
+        <div class="glass-card" style="text-align: center; padding: 20px;">
+          <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-certificate"></i></div>
+          <h4 data-en="Rhinoplasty Fellowship" data-ar="زمالة تجميل الأنف">Rhinoplasty Fellowship</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;" data-en="Specialized Surgical Training" data-ar="تدريب جراحي متقدم">Specialized Surgical Training</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photos Section (New) -->
+    <div id="photos" class="container hidden">
+      <h2 style="font-size: 2rem; margin-bottom: 10px; text-align: center;" data-en="Clinical Gallery & Photos" data-ar="معرض الصور والعيادة">Clinical Gallery & Photos</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;" data-en="Snapshots of clinical work, setup, and medical procedures:" data-ar="صور توثيقية للعمليات، العيادة، والأنشطة الطبية:">Snapshots of clinical work, setup, and medical procedures:</p>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;" id="galleryGrid">
         <img src="https://i.postimg.cc/PqScW0T4/IMG-20250411-WA0014.jpg" alt="Gallery 1" style="width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="openLightbox(0)">
@@ -293,6 +329,10 @@
         target.classList.add('active-page');
       }
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      
+      // إغلاق القائمة الجانبية تلقائياً على الموبايل عند اختيار صفحة
+      document.getElementById('navLinks').classList.remove('mobile-active');
+      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
