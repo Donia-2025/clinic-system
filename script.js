@@ -92,6 +92,66 @@ function toggleFaq(element) {
   }
 }
 
+// ===== نظام إدارة وعرض تقييمات المرضى (Reviews) =====
+document.addEventListener('DOMContentLoaded', () => {
+  loadReviews();
+
+  const reviewForm = document.getElementById('reviewForm');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('reviewName').value;
+      const rating = document.getElementById('reviewRating').value;
+      const comment = document.getElementById('reviewComment').value;
+
+      const newReview = { name, rating, comment, date: new Date().toLocaleDateString() };
+      
+      let reviews = JSON.parse(localStorage.getItem('clinicReviews')) || [];
+      reviews.unshift(newReview); // إضافة التقييم الجديد في البداية
+      localStorage.setItem('clinicReviews', JSON.stringify(reviews));
+
+      reviewForm.reset();
+      loadReviews();
+      
+      alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح.' : 'Thank you! Your review has been added successfully.');
+    });
+  }
+});
+
+function loadReviews() {
+  const container = document.getElementById('reviewsContainer');
+  if (!container) return;
+
+  let reviews = JSON.parse(localStorage.getItem('clinicReviews')) || [];
+  
+  // إذا لم تكن هناك تقييمات مخزنة، نضع تقييمات افتراضية كمثال
+  if (reviews.length === 0) {
+    reviews = [
+      { name: "محمد أحمد", rating: "5", comment: "دكتور ممتاز جداً وخلوق، قمت بعملية تعديل الحاجز الأنفي والنتيجة رائعة.", date: "2026-05-12" },
+      { name: "سارة خالد", rating: "5", comment: "أفضل استشاري أنف وأذن، اهتمام بالغ بالمريض وشرح تفصيلي للحالة.", date: "2026-06-01" }
+    ];
+    localStorage.setItem('clinicReviews', JSON.stringify(reviews));
+  }
+
+  container.innerHTML = '';
+  reviews.forEach(rev => {
+    let stars = '★'.repeat(parseInt(rev.rating)) + '☆'.repeat(5 - parseInt(rev.rating));
+    const card = document.createElement('div');
+    card.className = 'glass-card review-card';
+    card.style.cssText = 'padding: 15px; margin-bottom: 10px;';
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <strong style="font-size: 1rem;">${rev.name}</strong>
+        <span style="color: #f39c12; font-size: 0.9rem;">${stars}</span>
+      </div>
+      <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${rev.comment}</p>
+      <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 5px;">${rev.date}</span>
+    `;
+    container.appendChild(card);
+  });
+}
+
 // دالة إرسال الحجز لشيت جوجل وتوجيه المستخدم للواتساب معاً
 function sendBookingWhatsApp(event) {
   event.preventDefault();
@@ -112,7 +172,6 @@ function sendBookingWhatsApp(event) {
   }
 
   // ===== (1) إرسال البيانات إلى شيت جوجل (Google Sheets Web App URL) =====
-  // استبدلي الرابط التالي برابط الـ Web App الخاص بكِ
   const googleSheetUrl = "https://script.google.com/macros/s/AKfycby.../exec"; 
 
   const formData = new URLSearchParams();
@@ -124,7 +183,6 @@ function sendBookingWhatsApp(event) {
   formData.append('date', date);
   formData.append('time', time);
 
-  // إرسال البيانات في الخلفية لشيت جوجل دون مغادرة الصفحة
   fetch(googleSheetUrl, {
     method: 'POST',
     mode: 'no-cors',
@@ -146,7 +204,6 @@ function sendBookingWhatsApp(event) {
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${clinicWhatsAppNumber}&text=${encodedMessage}`;
   
-  // فتح الواتساب في تبويب جديد
   window.open(whatsappUrl, '_blank');
 }
 
