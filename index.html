@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,8 @@
   <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- ربط ملف الـ CSS الخارجي -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,7 +23,7 @@
     <button class="music-toggle-btn" onclick="toggleMusic()" id="musicToggleBtn">
       <i class="fas fa-play" id="music-icon"></i>
     </button>
-    <span class="music-title" data-en="Clinic Ambient Music" data-ar="موسيقى هادئة">Clinic Music</span>
+    <span class="music-title" data-en="Clinic Ambient Music" data-ar="موسيقى العيادة الهادئة">Clinic Music</span>
   </div>
 
   <!-- Header & Main Navbar -->
@@ -31,7 +33,7 @@
         <div class="logo-badge">
           <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="د. هشام جنيدي">
         </div>
-        <div>
+        <div class="nav-logo-text">
           <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</span>
           <div class="nav-logo-sub" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن وتجميل الأنف">ENT & Rhinoplasty Consultant</div>
         </div>
@@ -45,6 +47,7 @@
         <a href="#" onclick="showPage('photos')"><i class="fas fa-images"></i> <span data-en="Photos" data-ar="الصور">Photos</span></a>
         <a href="#" onclick="showPage('booking')"><i class="fas fa-calendar-check"></i> <span data-en="Booking" data-ar="حجز موعد">Booking</span></a>
         <a href="#" onclick="showPage('surgery-instructions')"><i class="fas fa-notes-medical"></i> <span data-en="Instructions" data-ar="تعليمات العمليات">Instructions</span></a>
+        <a href="#" onclick="showPage('faq')"><i class="fas fa-question-circle"></i> <span data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</span></a>
         <a href="#" onclick="showPage('testimonials')"><i class="fas fa-star"></i> <span data-en="Testimonials" data-ar="آراء المرضى">Testimonials</span></a>
       </div>
 
@@ -66,7 +69,7 @@
             <span class="badge-tag"><i class="fas fa-clock"></i> <span data-en="15+ Years Experience" data-ar="خبرة أكثر من 15 عاماً">15+ Years Experience</span></span>
           </div>
 
-          <h1 class="hero-title" data-en="Excellence in ENT, Sleep Surgery & Rhinoplasty" data-ar="التميز والاحترافية في جراحات الأنف والأذن والنوم والتجميل">
+          <h1 class="hero-title">
             <span data-en="Excellence in ENT," data-ar="التميز في جراحات">Excellence in ENT,</span><br>
             <span class="accent-line" data-en="Sleep Surgery & Rhinoplasty" data-ar="الأنف والأذن والحنجرة والتجميل">Sleep Surgery & Rhinoplasty</span>
           </h1>
@@ -80,7 +83,6 @@
             <a href="#" onclick="showPage('surgery-instructions')" class="btn-secondary"><i class="fas fa-notes-medical"></i> <span data-en="Surgery Guides" data-ar="تعليمات العمليات">Surgery Guides</span></a>
           </div>
 
-          <!-- Social Media Links Bar -->
           <div class="social-links-bar">
             <a href="https://www.instagram.com/Dr.HishamENT" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
             <a href="https://www.tiktok.com/@drhishament" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
@@ -115,7 +117,7 @@
         </p>
       </div>
 
-      <h3 style="font-size: 1.4rem;" data-en="Core Specialties" data-ar="التخصصات والخدمات الطبية">Core Specialties</h3>
+      <h3 style="font-size: 1.4rem; margin-bottom: 10px;" data-en="Core Specialties" data-ar="التخصصات والخدمات الطبية">Core Specialties</h3>
       <div class="services-grid">
         <div class="glass-card service-card">
           <div class="service-icon"><i class="fas fa-spa"></i></div>
@@ -194,10 +196,10 @@
     <!-- Booking Section -->
     <div id="booking" class="container hidden">
       <h2 class="section-title" data-en="Book an Appointment" data-ar="حجز موعد للكشف">Book an Appointment</h2>
-      <p class="section-subtitle" data-en="Fill out the details below to reserve your slot directly:" data-ar="أدخل بياناتك وسيتم تسجيل حجزك في العيادة فوراً مع إمكانية التأكيد عبر الواتساب:">Fill out the details below to reserve your slot directly:</p>
+      <p class="section-subtitle" data-en="Fill out the details below to reserve your slot directly:" data-ar="أدخل بياناتك وسيتم توجيهك لحجز موعدك عبر واتساب فوراً:">Fill out the details below to reserve your slot directly:</p>
 
       <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
-        <form id="bookingForm" onsubmit="event.preventDefault(); alert(isArabic ? 'تم إرسال طلب الحجز بنجاح، سنتواصل معك قريباً!' : 'Booking submitted successfully, we will contact you soon!');">
+        <form id="bookingForm" onsubmit="sendBookingWhatsApp(event)">
           <div class="form-group">
             <label for="name" data-en="Full Name:" data-ar="الاسم بالكامل:">Full Name:</label>
             <input type="text" id="name" placeholder="أدخل اسمك الكريم" required class="form-control">
@@ -212,39 +214,67 @@
             <div class="form-group">
               <label for="country" data-en="Country:" data-ar="الدولة:">Country:</label>
               <select id="country" class="form-control">
-                <option value="egypt">🇪🇬 مصر (Egypt)</option>
-                <option value="saudi">🇸🇦 المملكة العربية السعودية</option>
+                <option value="مصر (Egypt)">🇪🇬 مصر (Egypt)</option>
+                <option value="المملكة العربية السعودية">🇸🇦 المملكة العربية السعودية</option>
+                <option value="دولة أخري">🌍 دولة أخري (Other)</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="consultation-type" data-en="Consultation Type:" data-ar="نوع الاستشارة:">Consultation Type:</label>
               <select id="consultation-type" class="form-control">
-                <option value="in_clinic" data-en="In Clinic" data-ar="في العيادة">في العيادة (In Clinic)</option>
-                <option value="online" data-en="Online Consultation" data-ar="استشارة أونلاين">استشارة أونلاين (Online)</option>
+                <option value="في العيادة (In Clinic)" data-en="In Clinic" data-ar="في العيادة">في العيادة (In Clinic)</option>
+                <option value="استشارة أونلاين (Online)" data-en="Online Consultation" data-ar="استشارة أونلاين">استشارة أونلاين (Online)</option>
               </select>
             </div>
+          </div>
+
+          <!-- خانة الشكوى -->
+          <div class="form-group">
+            <label for="complaint" data-en="Main Complaint / Symptom:" data-ar="الشكوى أو سبب الكشف:">Main Complaint / Symptom:</label>
+            <select id="complaint" class="form-control" required>
+              <option value="" disabled selected data-en="Select your main complaint" data-ar="اختر الشكوى الرئيسية أو سبب الكشف">اختر الشكوى الرئيسية أو سبب الكشف</option>
+              <option value="الجيوب الأنفية">الجيوب الأنفية</option>
+              <option value="الشخير واضطرابات النوم">الشخير واضطرابات النوم</option>
+              <option value="الشم والتذوق">الشم والتذوق</option>
+              <option value="ضعف السمع">ضعف السمع</option>
+              <option value="طنين الاذن">طنين الاذن</option>
+              <option value="الدوار وعدم الاتزان">الدوار وعدم الاتزان</option>
+              <option value="الصداع">الصداع</option>
+              <option value="الاذن">الاذن</option>
+              <option value="الحلق و الحنجره">الحلق و الحنجره</option>
+              <option value="الرقبه">الرقبه</option>
+              <option value="تجميل الانف و الوجه">تجميل الانف و الوجه</option>
+              <option value="اخري">أخري</option>
+            </select>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div class="form-group">
               <label for="date" data-en="Preferred Date:" data-ar="التاريخ المفضل:">Preferred Date:</label>
-              <input type="date" id="date" class="form-control">
+              <input type="date" id="date" class="form-control" required>
             </div>
 
             <div class="form-group">
               <label for="time" data-en="Preferred Time:" data-ar="الوقت المفضل:">Preferred Time:</label>
-              <select id="time" class="form-control">
-                <option value="17:00">05:00 مساءً</option>
-                <option value="18:00">06:00 مساءً</option>
-                <option value="19:00">07:00 مساءً</option>
-                <option value="20:00">08:00 مساءً</option>
+              <select id="time" class="form-control" onchange="checkCustomTime(this)">
+                <option value="05:00 مساءً">05:00 مساءً</option>
+                <option value="06:00 مساءً">06:00 مساءً</option>
+                <option value="07:00 مساءً">07:00 مساءً</option>
+                <option value="08:00 مساءً">08:00 مساءً</option>
+                <option value="وقت أخري">وقت أخري</option>
               </select>
             </div>
           </div>
 
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 15px; font-size: 1.1rem;">
-            <i class="fas fa-check-circle"></i> <span data-en="Confirm & Submit Booking" data-ar="تأكيد وتسجيل الحجز">Confirm & Submit Booking</span>
+          <!-- خانة كتابة الوقت يدوياً عند اختيار "وقت أخري" -->
+          <div class="form-group" id="customTimeGroup" style="display: none; margin-top: 10px;">
+            <label for="custom-time" data-en="Enter Custom Time:" data-ar="اكتب الوقت المناسب لك:">Enter Custom Time:</label>
+            <input type="text" id="custom-time" placeholder="مثال: 04:30 عصراً" class="form-control">
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 15px; font-size: 1.1rem; background-color: #25d366;">
+            <i class="fab fa-whatsapp"></i> <span data-en="Book via WhatsApp" data-ar="إرسال طلب الحجز عبر واتساب">Book via WhatsApp</span>
           </button>
         </form>
       </div>
@@ -277,6 +307,56 @@
             <li data-en="Avoid hot foods and hot drinks for 10 days." data-ar="تجنب المأكولات والمشروبات الساخنة جداً لمدة 10 أيام.">تجنب المأكولات والمشروبات الساخنة جداً.</li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div id="faq" class="container hidden">
+      <h2 class="section-title" data-en="Frequently Asked Questions" data-ar="الأسئلة الشائعة في مجال الأنف والأذن">Frequently Asked Questions</h2>
+      <p class="section-subtitle" data-en="Common questions about ENT, surgeries, and treatments:" data-ar="إجابات مبسطة على أهم استفسارات المرضى حول العمليات والعلاجات:">Common questions about ENT, surgeries, and treatments:</p>
+
+      <div class="faq-container" style="max-width: 700px; margin: 0 auto; display: grid; gap: 15px;">
+        
+        <div class="glass-card faq-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="margin: 0; font-size: 1.05rem;" data-en="What is the recovery period after rhinoplasty?" data-ar="ما هي مدة التعافي بعد عملية تجميل الأنف؟">What is the recovery period after rhinoplasty?</h4>
+            <i class="fas fa-chevron-down faq-icon" style="transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-answer" style="display: none; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;" data-en="Most swelling and bruising subside within 2 to 3 weeks, but the final shape of the nose continues to refine over 6 to 12 months." data-ar="يزول معظم الورم والكدمات خلال 2 إلى 3 أسابيع، ولكن الشكل النهائي للأنف يظهر بوضوح تدريجياً خلال 6 إلى 12 شهراً.">
+            Most swelling and bruising subside within 2 to 3 weeks, but the final shape of the nose continues to refine over 6 to 12 months.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="margin: 0; font-size: 1.05rem;" data-en="Are surgeries for snoring and sleep apnea effective?" data-ar="هل جراحات الشخير وانقطاع التنفس فعالة؟">Are surgeries for snoring and sleep apnea effective?</h4>
+            <i class="fas fa-chevron-down faq-icon" style="transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-answer" style="display: none; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;" data-en="Yes, identifying the exact site of airway obstruction (using endoscopy or sleep studies) and treating it surgically or non-surgically greatly improves breathing and sleep quality." data-ar="نعم، تحديد مكان الانسداد بدقة (باستخدام المنظار أو دراسة النوم) وعلاجه جراحياً أو تحفظياً يحسن جودة النوم والتنفس بشكل ملحوظ جداً.">
+            Yes, identifying the exact site of airway obstruction and treating it greatly improves breathing and sleep quality.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="margin: 0; font-size: 1.05rem;" data-en="When should I consult an ENT specialist for chronic sinusitis?" data-ar="متى يجب استشارة الطبيب لعلاج الجيوب الأنفية المزمنة؟">When should I consult an ENT specialist for chronic sinusitis?</h4>
+            <i class="fas fa-chevron-down faq-icon" style="transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-answer" style="display: none; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;" data-en="If symptoms like nasal congestion, facial pressure, and reduced sense of smell persist for more than 12 weeks despite medical treatments." data-ar="إذا استمرت أعراض انسداد الأنف، الضغط في الوجه، وفقدان حاسة الشم لأكثر من 12 أسبوعاً رغم العلاجات الدوائية المعتادة.">
+            If symptoms persist for more than 12 weeks despite standard medical treatments.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item" style="cursor: pointer;" onclick="toggleFaq(this)">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="margin: 0; font-size: 1.05rem;" data-en="Is endoscopic sinus surgery painful?" data-ar="هل عملية مناظير الجيوب الأنفية مؤلمة؟">Is endoscopic sinus surgery painful?</h4>
+            <i class="fas fa-chevron-down faq-icon" style="transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-answer" style="display: none; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;" data-en="The procedure is done under general anesthesia so you feel no pain during it. Post-operative discomfort is usually mild and easily managed with prescribed painkillers." data-ar="تتم العملية تحت تأثير التخدير الكامل فلا يشعر المريض بأي ألم أثناءها، وغالباً ما يكون الشعور بعد العملية خفيفاً ويتم السيطرة عليه بسهولة بالمسكنات المعتادة.">
+            The procedure is done under general anesthesia, and post-operative discomfort is usually mild and easily managed with prescribed painkillers.
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -322,157 +402,6 @@
     <img id="lightbox-img" alt="Enlarged view">
   </div>
 
-  <style>
-    /* تنسيق الصورة داخل المربع الزيتي للوجو العلوي */
-    .logo-badge {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #1b382b;
-    }
-    .logo-badge img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* --- الإضافات البرمجية للتجاوب مع الموبايل (Responsive CSS) --- */
-    @media (max-width: 900px) {
-      .hero-wrapper {
-        grid-template-columns: 1fr !important;
-        text-align: center;
-      }
-      .hero-badges, .hero-actions {
-        justify-content: center;
-      }
-      .container {
-        padding: 20px !important;
-        width: 95% !important;
-        margin: 20px auto !important;
-      }
-      /* القائمة الجانبية للموبايل */
-      .nav-links {
-        position: fixed;
-        top: 70px;
-        right: -100%;
-        width: 280px;
-        height: calc(100vh - 70px);
-        background: white;
-        flex-direction: column;
-        padding: 30px 20px;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        align-items: stretch;
-        overflow-y: auto;
-        z-index: 1000;
-      }
-      .nav-links.mobile-active {
-        right: 0;
-      }
-      /* دعم الاتجاه الإنجليزي في الموبايل */
-      body[dir="ltr"] .nav-links {
-        right: auto;
-        left: -100%;
-      }
-      body[dir="ltr"] .nav-links.mobile-active {
-        left: 0;
-      }
-      .hamburger {
-        display: block !important;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: var(--dark, #0f172a);
-        cursor: pointer;
-      }
-    }
-  </style>
-
-  <script>
-    let isArabic = false;
-
-    function showPage(pageId) {
-      document.querySelectorAll('.container').forEach(p => {
-        p.classList.add('hidden');
-        p.classList.remove('active-page');
-      });
-      const target = document.getElementById(pageId);
-      if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('active-page');
-      }
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      
-      // إغلاق القائمة تلقائياً في الموبايل عند التنقل بين الأقسام
-      const navLinks = document.getElementById('navLinks');
-      const hamburgerIcon = document.getElementById('hamburger-icon');
-      if (navLinks) {
-        navLinks.classList.remove('mobile-active');
-      }
-      if (hamburgerIcon) {
-        hamburgerIcon.classList.remove('fa-xmark');
-        hamburgerIcon.classList.add('fa-bars');
-      }
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleLanguage() {
-      isArabic = !isArabic;
-      document.getElementById('langText').textContent = isArabic ? 'English' : 'عربي';
-      document.body.dir = isArabic ? 'rtl' : 'ltr';
-      
-      document.querySelectorAll('[data-en]').forEach(el => {
-        el.textContent = isArabic ? el.getAttribute('data-ar') : el.getAttribute('data-en');
-      });
-    }
-
-    function toggleMobileMenu() {
-      const navLinks = document.getElementById('navLinks');
-      const hamburgerIcon = document.getElementById('hamburger-icon');
-      navLinks.classList.toggle('mobile-active');
-      
-      if (hamburgerIcon) {
-        if (navLinks.classList.contains('mobile-active')) {
-          hamburgerIcon.classList.remove('fa-bars');
-          hamburgerIcon.classList.add('fa-xmark');
-        } else {
-          hamburgerIcon.classList.remove('fa-xmark');
-          hamburgerIcon.classList.add('fa-bars');
-        }
-      }
-    }
-
-    function openLightbox(idx) {
-      const modal = document.getElementById('gallery-lightbox');
-      const img = document.getElementById('lightbox-img');
-      const images = document.querySelectorAll('#galleryGrid img');
-      if (images[idx]) {
-        img.src = images[idx].src;
-        modal.style.display = 'flex';
-      }
-    }
-
-    function closeLightbox() {
-      document.getElementById('gallery-lightbox').style.display = 'none';
-    }
-
-    function toggleMusic() {
-      const audio = document.getElementById('background-music');
-      const icon = document.getElementById('music-icon');
-      if (audio.paused) {
-        audio.play();
-        icon.className = 'fas fa-pause';
-      } else {
-        audio.pause();
-        icon.className = 'fas fa-play';
-      }
-    }
-  </script>
   <script src="script.js"></script>
 </body>
 </html>
