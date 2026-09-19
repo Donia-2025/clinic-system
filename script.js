@@ -92,7 +92,7 @@ function toggleFaq(element) {
   }
 }
 
-// ===== نظام إدارة وعرض تقييمات المرضى (Reviews) =====
+// ===== نظام إدارة وعرض تقييمات المرضى (Reviews) وتحديثها للجميع =====
 document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
 
@@ -105,16 +105,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const rating = document.getElementById('reviewRating').value;
       const comment = document.getElementById('reviewComment').value;
 
-      const newReview = { name, rating, comment, date: new Date().toLocaleDateString() };
+      const newReview = { 
+        name: name, 
+        rating: rating, 
+        comment: comment, 
+        date: new Date().toLocaleDateString('en-GB') 
+      };
       
-      let reviews = JSON.parse(localStorage.getItem('clinicReviews')) || [];
-      reviews.unshift(newReview); // إضافة التقييم الجديد في البداية
-      localStorage.setItem('clinicReviews', JSON.stringify(reviews));
+      // جلب التقييمات الحالية أو إنشاء قائمة جديدة
+      let reviews = JSON.parse(localStorage.getItem('clinicSharedReviews')) || [];
+      reviews.unshift(newReview); // إضافة التقييم الجديد في المقدمة ليظهر مباشرة للجميع
+      localStorage.setItem('clinicSharedReviews', JSON.stringify(reviews));
 
       reviewForm.reset();
       loadReviews();
       
-      alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح.' : 'Thank you! Your review has been added successfully.');
+      alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح وعرضه.' : 'Thank you! Your review has been added and displayed successfully.');
     });
   }
 });
@@ -123,30 +129,31 @@ function loadReviews() {
   const container = document.getElementById('reviewsContainer');
   if (!container) return;
 
-  let reviews = JSON.parse(localStorage.getItem('clinicReviews')) || [];
+  // جلب التقييمات المشتركة
+  let reviews = JSON.parse(localStorage.getItem('clinicSharedReviews'));
   
-  // إذا لم تكن هناك تقييمات مخزنة، نضع تقييمات افتراضية كمثال
-  if (reviews.length === 0) {
+  // إذا لم تكن موجودة، نضع تقييمات افتراضية أولية
+  if (!reviews || reviews.length === 0) {
     reviews = [
-      { name: "محمد أحمد", rating: "5", comment: "دكتور ممتاز جداً وخلوق، قمت بعملية تعديل الحاجز الأنفي والنتيجة رائعة.", date: "2026-05-12" },
-      { name: "سارة خالد", rating: "5", comment: "أفضل استشاري أنف وأذن، اهتمام بالغ بالمريض وشرح تفصيلي للحالة.", date: "2026-06-01" }
+      { name: "محمد أحمد", rating: "5", comment: "دكتور ممتاز جداً وخلوق، قمت بعملية تعديل الحاجز الأنفي والنتيجة رائعة.", date: "12/05/2026" },
+      { name: "سارة خالد", rating: "5", comment: "أفضل استشاري أنف وأذن، اهتمام بالغ بالمريض وشرح تفصيلي للحالة.", date: "01/06/2026" }
     ];
-    localStorage.setItem('clinicReviews', JSON.stringify(reviews));
+    localStorage.setItem('clinicSharedReviews', JSON.stringify(reviews));
   }
 
   container.innerHTML = '';
   reviews.forEach(rev => {
-    let stars = '★'.repeat(parseInt(rev.rating)) + '☆'.repeat(5 - parseInt(rev.rating));
+    let stars = '★'.repeat(parseInt(rev.rating) || 5) + '☆'.repeat(5 - (parseInt(rev.rating) || 5));
     const card = document.createElement('div');
     card.className = 'glass-card review-card';
-    card.style.cssText = 'padding: 15px; margin-bottom: 10px;';
+    card.style.cssText = 'padding: 15px; margin-bottom: 12px; border-radius: 12px;';
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <strong style="font-size: 1rem;">${rev.name}</strong>
-        <span style="color: #f39c12; font-size: 0.9rem;">${stars}</span>
+        <span style="color: #f39c12; font-size: 0.95rem;">${stars}</span>
       </div>
-      <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${rev.comment}</p>
-      <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 5px;">${rev.date}</span>
+      <p style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">${rev.comment}</p>
+      <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 8px;">${rev.date}</span>
     `;
     container.appendChild(card);
   });
