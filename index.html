@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- ربط ملف الـ CSS الخارجي -->
+  <!-- ربط ملف الـ CSS الخارجي (بدون أي تعديل عليه) -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,14 +28,16 @@
 
   <!-- Header & Main Navbar -->
   <header>
-    <div class="nav-container">
-      <a href="#" class="nav-logo" onclick="showPage('home')">
-        <div class="logo-badge">
-          <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="د. هشام جنيدي">
+    <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap;">
+      
+      <!-- تم استخدام !important في التنسيق الداخلي لفرض ظهور الشعار والاسم بجانب بعضهما على الموبايل متجاوزاً الـ CSS الخارجي -->
+      <a href="#" class="nav-logo" onclick="showPage('home')" style="display: flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important; text-decoration: none;">
+        <div class="logo-badge" style="flex-shrink: 0;">
+          <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="د. هشام جنيدي" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
         </div>
-        <div class="nav-logo-text">
-          <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</span>
-          <div class="nav-logo-sub" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن وتجميل الأنف">ENT & Rhinoplasty Consultant</div>
+        <div class="nav-logo-text" style="display: flex !important; flex-direction: column !important; text-align: right !important;">
+          <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي" style="font-weight: bold !important; font-size: 0.9rem !important; white-space: nowrap !important; color: inherit;">Dr. Hisham Genedy</span>
+          <div class="nav-logo-sub" data-en="ENT & Rhinoplasty Consultant" data-ar="استشاري الأنف والأذن وتجميل الأنف" style="white-space: nowrap !important; font-size: 0.65rem !important; color: inherit;">ENT & Rhinoplasty Consultant</div>
         </div>
       </a>
 
@@ -51,7 +53,7 @@
         <a href="#" onclick="showPage('testimonials')"><i class="fas fa-star"></i> <span data-en="Testimonials" data-ar="آراء المرضى">Testimonials</span></a>
       </div>
 
-      <div class="nav-actions">
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 8px;">
         <button class="btn-lang" onclick="toggleLanguage()"><i class="fas fa-globe"></i> <span id="langText">عربي</span></button>
         <a href="#" onclick="showPage('booking')" class="btn-primary btn-book-nav"><i class="fas fa-calendar-alt"></i> <span data-en="Book Now" data-ar="احجز الآن">Book Now</span></a>
         <button class="hamburger" onclick="toggleMobileMenu()"><i class="fas fa-bars" id="hamburger-icon"></i></button>
