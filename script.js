@@ -1,112 +1,197 @@
-// روابط الـ Web Apps الخاصة بجوجل
-const bookingURL = 'https://script.google.com/macros/s/AKfycbzHlGljWOFQZdu4tVIAUPi94hXFd8IFJF8lEwYUgu4-9e1G74qEyKrMN39wyi5O2ApYaQ/exec'; // رابط الحجز
-const reviewScriptURL = 'https://script.google.com/macros/s/AKfycbxWYwAhWlCfH41VR-ogi3viZtFfNNHK9R7PM9-bWGF5bf4uCzkPLVYnaclfUkJfuYeZ/exec'; // رابط الآراء والتقييمات
+// حالة اللغة الحالية (افتراضياً الإنجليزية أو حسب تفضيلك)
+let isArabic = false;
 
-document.addEventListener('DOMContentLoaded', () => {
-  
-  // 1. التعامل مع فورم الحجز
-  const bookingForm = document.getElementById('bookingForm');
-  if (bookingForm) {
-    bookingForm.addEventListener('submit', e => {
-      e.preventDefault();
-      
-      const formData = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        country: document.getElementById('country').value,
-        consultationType: document.getElementById('consultation-type').value,
-        date: document.getElementById('date').value,
-        time: document.getElementById('time').value
-      };
+// دالة التنقل بين الصفحات (Show / Hide Pages)
+function showPage(pageId) {
+  const pages = document.querySelectorAll('main > div');
+  pages.forEach(page => {
+    page.classList.add('hidden');
+    page.classList.remove('active-page');
+  });
 
-      fetch(bookingURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-      .then(() => {
-        alert('تم حجز موعدك بنجاح!');
-        bookingForm.reset();
-      })
-      .catch(error => {
-        console.error('Error!', error);
-        alert('حدث خطأ في الاتصال، جربي مرة أخرى.');
-      });
-    });
+  const targetPage = document.getElementById(pageId);
+  if (targetPage) {
+    targetPage.classList.remove('hidden');
+    targetPage.classList.add('active-page');
   }
 
-  // 2. جلب وعرض الآراء تلقائياً عند فتح الصفحة
-  loadReviews();
-
-  // 3. التعامل مع فورم إرسال التقييم/الرأي
-  const reviewForm = document.getElementById('reviewForm');
-  if (reviewForm) {
-    reviewForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      
-      const reviewData = {
-        name: document.getElementById('reviewName').value,
-        rating: document.getElementById('reviewRating').value,
-        comment: document.getElementById('reviewComment').value
-      };
-
-      try {
-        await fetch(reviewScriptURL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(reviewData)
-        });
-        
-        alert('شكراً لك! تم إرسال تقييمك بنجاح.');
-        reviewForm.reset();
-        
-        // إعادة تحميل الآراء بعد ثوانٍ لتظهر فوراً على الصفحة
-        setTimeout(loadReviews, 2000);
-      } catch (error) {
-        console.error('Error!', error);
-        alert('حدث خطأ أثناء إرسال التقييم.');
-      }
-    });
-  }
-
-});
-
-// دالة جلب الآراء من الشيت وعرضها في الكارتات
-async function loadReviews() {
-  const container = document.getElementById('reviewsContainer');
-  if (!container) return;
-
-  try {
-    const response = await fetch(reviewScriptURL);
-    const reviews = await response.json();
-    
-    if (!reviews || reviews.length === 0) {
-      container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">لا توجد آراء مسجلة حتى الآن. كُن أول من يشاركنا رأيه!</p>';
-      return;
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    const onclickAttr = link.getAttribute('onclick');
+    if (onclickAttr && onclickAttr.includes(pageId)) {
+      link.classList.add('active');
     }
-    
-    container.innerHTML = '';
-    // ترتيب الآراء بحيث الأحدث يظهر أولاً
-    reviews.reverse().forEach(rev => {
-      const stars = '★'.repeat(Number(rev.rating) || 5) + '☆'.repeat(5 - (Number(rev.rating) || 5));
-      
-      const card = document.createElement('div');
-      card.className = 'glass-card';
-      card.style.cssText = 'margin-bottom: 15px; padding: 15px; border-radius: 12px;';
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <strong style="font-size: 1.05rem; color: var(--dark);">${rev.name}</strong>
-          <span style="color: #f59e0b; font-size: 0.9rem;">${stars}</span>
-        </div>
-        <p style="color: var(--text-main); margin-bottom: 8px; line-height: 1.6;">${rev.comment}</p>
-        <small style="color: var(--text-muted); font-size: 0.8rem;">${rev.date || ''}</small>
-      `;
-      container.appendChild(card);
+  });
+
+  const navMenu = document.getElementById('navLinks');
+  if (navMenu) {
+    navMenu.classList.remove('mobile-active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// دالة تبديل اللغة (عربي / إنجليزي)
+function toggleLanguage() {
+  isArabic = !isArabic;
+  const htmlTag = document.documentElement;
+  const langText = document.getElementById('langText');
+
+  if (isArabic) {
+    htmlTag.setAttribute('dir', 'rtl');
+    htmlTag.setAttribute('lang', 'ar');
+    if (langText) langText.textContent = 'English';
+  } else {
+    htmlTag.setAttribute('dir', 'ltr');
+    htmlTag.setAttribute('lang', 'en');
+    if (langText) langText.textContent = 'عربي';
+  }
+
+  const elements = document.querySelectorAll('[data-ar][data-en]');
+  elements.forEach(el => {
+    if (isArabic) {
+      el.textContent = el.getAttribute('data-ar');
+    } else {
+      el.textContent = el.getAttribute('data-en');
+    }
+  });
+}
+
+// دالة تفعيل قائمة الموبايل الجانبية
+function toggleMobileMenu() {
+  const navLinks = document.getElementById('navLinks');
+  if (navLinks) {
+    navLinks.classList.toggle('mobile-active');
+  }
+}
+
+// دالة لإظهار خانة الوقت المخصص إذا تم اختيار "وقت أخري"
+function checkCustomTime(selectElement) {
+  const customTimeGroup = document.getElementById('customTimeGroup');
+  if (selectElement.value === 'وقت أخري') {
+    customTimeGroup.style.display = 'block';
+    document.getElementById('custom-time').required = true;
+  } else {
+    customTimeGroup.style.display = 'none';
+    document.getElementById('custom-time').required = false;
+  }
+}
+
+// دالة فتح وإغلاق الأسئلة الشائعة (FAQ Accordion)
+function toggleFaq(element) {
+  const answer = element.querySelector('.faq-answer');
+  const icon = element.querySelector('.faq-icon');
+  
+  if (answer.style.display === 'block') {
+    answer.style.display = 'none';
+    icon.style.transform = 'rotate(0deg)';
+  } else {
+    answer.style.display = 'block';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// دالة إرسال الحجز لشيت جوجل وتوجيه المستخدم للواتساب معاً
+function sendBookingWhatsApp(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const country = document.getElementById('country').value;
+  const consultationType = document.getElementById('consultation-type').value;
+  const complaint = document.getElementById('complaint').value;
+  const date = document.getElementById('date').value;
+  
+  let time = document.getElementById('time').value;
+  if (time === 'وقت أخري') {
+    const customTime = document.getElementById('custom-time').value;
+    if (customTime) {
+      time = customTime;
+    }
+  }
+
+  // ===== (1) إرسال البيانات إلى شيت جوجل (Google Sheets Web App URL) =====
+  // استبدلي الرابط التالي برابط الـ Web App الخاص بكِ
+  const googleSheetUrl = "https://script.google.com/macros/s/AKfycby.../exec"; 
+
+  const formData = new URLSearchParams();
+  formData.append('name', name);
+  formData.append('phone', phone);
+  formData.append('country', country);
+  formData.append('consultationType', consultationType);
+  formData.append('complaint', complaint);
+  formData.append('date', date);
+  formData.append('time', time);
+
+  // إرسال البيانات في الخلفية لشيت جوجل دون مغادرة الصفحة
+  fetch(googleSheetUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  }).catch(error => console.log('Google Sheet Error:', error));
+
+  // ===== (2) فتح واتساب بالرسالة المنسقة =====
+  const clinicWhatsAppNumber = "966560533284";
+  const message = `مرحباً، أرغب في حجز موعد جديد في عيادة د. هشام جنيدي:
+  
+👤 الاسم: ${name}
+📞 الهاتف: ${phone}
+🌍 الدولة: ${country}
+🏥 نوع الاستشارة: ${consultationType}
+🩺 الشكوى / سبب الكشف: ${complaint}
+📅 التاريخ المفضل: ${date}
+⏰ الوقت المفضل: ${time}`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${clinicWhatsAppNumber}&text=${encodedMessage}`;
+  
+  // فتح الواتساب في تبويب جديد
+  window.open(whatsappUrl, '_blank');
+}
+
+// مشغل الموسيقى الخلفي للعيادة
+function toggleMusic() {
+  const music = document.getElementById('background-music');
+  const icon = document.getElementById('music-icon');
+  
+  if (music.paused) {
+    music.play().then(() => {
+      icon.classList.remove('fa-play');
+      icon.classList.add('fa-pause');
+    }).catch(e => {
+      console.log("Audio autoplay restricted:", e);
     });
-  } catch (error) {
-    console.error('Error loading reviews:', error);
-    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">تعذر تحميل الآراء حالياً.</p>';
+  } else {
+    music.pause();
+    icon.classList.remove('fa-pause');
+    icon.classList.add('fa-play');
+  }
+}
+
+// فتح صور المعرض (Lightbox)
+function openLightbox(index) {
+  const images = [
+    "https://i.postimg.cc/PqScW0T4/IMG-20250411-WA0014.jpg",
+    "https://i.postimg.cc/7LHdTq8h/IMG-20250411-WA0018.jpg",
+    "https://i.postimg.cc/d3yxK1dH/IMG-20250411-WA0019.jpg",
+    "https://i.postimg.cc/rwcYvqpj/IMG-20250411-WA0024.jpg",
+    "https://i.postimg.cc/662SZHSr/IMG-20250411-WA0022.jpg",
+    "https://i.postimg.cc/65K0QYN5/Whats-App-Image-2025-04-11-at-01-28-57-763a52fa.jpg"
+  ];
+  
+  const lightbox = document.getElementById('gallery-lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  
+  if (lightbox && lightboxImg && images[index]) {
+    lightboxImg.src = images[index];
+    lightbox.style.display = 'flex';
+  }
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('gallery-lightbox');
+  if (lightbox) {
+    lightbox.style.display = 'none';
   }
 }
