@@ -29,7 +29,7 @@
     <div class="nav-container">
       <a href="#" class="nav-logo" onclick="showPage('home')">
         <div class="logo-badge">
-          <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="Dr. Hisham Genedy">
+          <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="د. هشام جنيدي">
         </div>
         <div>
           <span data-en="Dr. Hisham Genedy" data-ar="د. هشام جنيدي">Dr. Hisham Genedy</span>
@@ -51,7 +51,7 @@
       <div class="nav-actions">
         <button class="btn-lang" onclick="toggleLanguage()"><i class="fas fa-globe"></i> <span id="langText">عربي</span></button>
         <a href="#" onclick="showPage('booking')" class="btn-primary btn-book-nav"><i class="fas fa-calendar-alt"></i> <span data-en="Book Now" data-ar="احجز الآن">Book Now</span></a>
-        <button class="hamburger" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+        <button class="hamburger" onclick="toggleMobileMenu()"><i class="fas fa-bars" id="hamburger-icon"></i></button>
       </div>
     </div>
   </header>
@@ -92,7 +92,7 @@
         
         <div class="hero-image-container">
           <div class="hero-image-frame">
-            <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="Dr. Hisham Genedy">
+            <img src="https://i.postimg.cc/gJ6Dx7Jr/Whats-App-Image-2025-04-06-at-13-20-02-3468f1a5.jpg" alt="د. هشام جنيدي">
             <div class="hero-image-card">
               <i class="fas fa-stethoscope"></i>
               <div>
@@ -197,21 +197,21 @@
       <p class="section-subtitle" data-en="Fill out the details below to reserve your slot directly:" data-ar="أدخل بياناتك وسيتم تسجيل حجزك في العيادة فوراً مع إمكانية التأكيد عبر الواتساب:">Fill out the details below to reserve your slot directly:</p>
 
       <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
-        <form id="bookingForm">
+        <form id="bookingForm" onsubmit="event.preventDefault(); alert(isArabic ? 'تم إرسال طلب الحجز بنجاح، سنتواصل معك قريباً!' : 'Booking submitted successfully, we will contact you soon!');">
           <div class="form-group">
             <label for="name" data-en="Full Name:" data-ar="الاسم بالكامل:">Full Name:</label>
-            <input type="text" id="name" placeholder="أدخل اسمك الكريم" required>
+            <input type="text" id="name" placeholder="أدخل اسمك الكريم" required class="form-control">
           </div>
 
           <div class="form-group">
             <label for="phone" data-en="Phone Number:" data-ar="رقم الهاتف:">Phone Number:</label>
-            <input type="tel" id="phone" placeholder="010XXXXXXXX" required dir="ltr">
+            <input type="tel" id="phone" placeholder="010XXXXXXXX" required dir="ltr" class="form-control">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div class="form-group">
               <label for="country" data-en="Country:" data-ar="الدولة:">Country:</label>
-              <select id="country">
+              <select id="country" class="form-control">
                 <option value="egypt">🇪🇬 مصر (Egypt)</option>
                 <option value="saudi">🇸🇦 المملكة العربية السعودية</option>
               </select>
@@ -219,7 +219,7 @@
 
             <div class="form-group">
               <label for="consultation-type" data-en="Consultation Type:" data-ar="نوع الاستشارة:">Consultation Type:</label>
-              <select id="consultation-type">
+              <select id="consultation-type" class="form-control">
                 <option value="in_clinic" data-en="In Clinic" data-ar="في العيادة">في العيادة (In Clinic)</option>
                 <option value="online" data-en="Online Consultation" data-ar="استشارة أونلاين">استشارة أونلاين (Online)</option>
               </select>
@@ -229,12 +229,12 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div class="form-group">
               <label for="date" data-en="Preferred Date:" data-ar="التاريخ المفضل:">Preferred Date:</label>
-              <input type="date" id="date">
+              <input type="date" id="date" class="form-control">
             </div>
 
             <div class="form-group">
               <label for="time" data-en="Preferred Time:" data-ar="الوقت المفضل:">Preferred Time:</label>
-              <select id="time">
+              <select id="time" class="form-control">
                 <option value="17:00">05:00 مساءً</option>
                 <option value="18:00">06:00 مساءً</option>
                 <option value="19:00">07:00 مساءً</option>
@@ -252,7 +252,7 @@
 
     <!-- Surgery Instructions Section -->
     <div id="surgery-instructions" class="container hidden">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
         <h2 style="font-size: 1.7rem; margin:0;" data-en="Post-Operative Surgery Guides" data-ar="تعليمات وإرشادات العمليات الجراحية">Post-Operative Surgery Guides</h2>
         <button onclick="window.print()" class="btn-secondary" style="padding: 8px 18px; border-radius: 8px;">
           <i class="fas fa-print"></i> <span data-en="Print Instructions" data-ar="طباعة التعليمات">Print Instructions</span>
@@ -286,19 +286,19 @@
 
       <div class="glass-card" style="max-width: 600px; margin: 0 auto 35px auto;">
         <h3 style="font-size: 1.15rem; margin-bottom: 15px;" data-en="Leave a Review" data-ar="شاركنا رأيك وتجربتك">Leave a Review</h3>
-        <form id="reviewForm">
+        <form id="reviewForm" onsubmit="event.preventDefault(); alert(isArabic ? 'شكراً لتقييمك!' : 'Thank you for your review!');">
           <div class="form-group">
-            <input type="text" id="reviewName" placeholder="اسمك الكريم" required>
+            <input type="text" id="reviewName" placeholder="اسمك الكريم" required class="form-control">
           </div>
           <div class="form-group">
-            <select id="reviewRating">
+            <select id="reviewRating" class="form-control">
               <option value="5">★★★★★ (5/5) ممتاز جداً</option>
               <option value="4">★★★★☆ (4/5) جيد جداً</option>
               <option value="3">★★★☆☆ (3/5) جيد</option>
             </select>
           </div>
           <div class="form-group">
-            <textarea id="reviewComment" rows="3" placeholder="اكتب تعليقك وتجربتك..." required></textarea>
+            <textarea id="reviewComment" rows="3" placeholder="اكتب تعليقك وتجربتك..." required class="form-control"></textarea>
           </div>
           <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
             <i class="fas fa-paper-plane"></i> <span data-en="Submit Feedback" data-ar="إرسال التقييم">Submit Feedback</span>
@@ -319,7 +319,7 @@
 
   <!-- Lightbox Modal -->
   <div id="gallery-lightbox" class="lightbox-overlay" onclick="closeLightbox()">
-    <img id="lightbox-img">
+    <img id="lightbox-img" alt="Enlarged view">
   </div>
 
   <style>
@@ -332,12 +332,63 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #1b382b; /* لون خلفية زيتي احتياطي */
+      background-color: #1b382b;
     }
     .logo-badge img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* --- الإضافات البرمجية للتجاوب مع الموبايل (Responsive CSS) --- */
+    @media (max-width: 900px) {
+      .hero-wrapper {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+      }
+      .hero-badges, .hero-actions {
+        justify-content: center;
+      }
+      .container {
+        padding: 20px !important;
+        width: 95% !important;
+        margin: 20px auto !important;
+      }
+      /* القائمة الجانبية للموبايل */
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 280px;
+        height: calc(100vh - 70px);
+        background: white;
+        flex-direction: column;
+        padding: 30px 20px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        align-items: stretch;
+        overflow-y: auto;
+        z-index: 1000;
+      }
+      .nav-links.mobile-active {
+        right: 0;
+      }
+      /* دعم الاتجاه الإنجليزي في الموبايل */
+      body[dir="ltr"] .nav-links {
+        right: auto;
+        left: -100%;
+      }
+      body[dir="ltr"] .nav-links.mobile-active {
+        left: 0;
+      }
+      .hamburger {
+        display: block !important;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--dark, #0f172a);
+        cursor: pointer;
+      }
     }
   </style>
 
@@ -345,7 +396,10 @@
     let isArabic = false;
 
     function showPage(pageId) {
-      document.querySelectorAll('.container').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.container').forEach(p => {
+        p.classList.add('hidden');
+        p.classList.remove('active-page');
+      });
       const target = document.getElementById(pageId);
       if (target) {
         target.classList.remove('hidden');
@@ -353,7 +407,16 @@
       }
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       
-      document.getElementById('navLinks').classList.remove('mobile-active');
+      // إغلاق القائمة تلقائياً في الموبايل عند التنقل بين الأقسام
+      const navLinks = document.getElementById('navLinks');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      if (navLinks) {
+        navLinks.classList.remove('mobile-active');
+      }
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.remove('fa-xmark');
+        hamburgerIcon.classList.add('fa-bars');
+      }
       
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -369,7 +432,19 @@
     }
 
     function toggleMobileMenu() {
-      document.getElementById('navLinks').classList.toggle('mobile-active');
+      const navLinks = document.getElementById('navLinks');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      navLinks.classList.toggle('mobile-active');
+      
+      if (hamburgerIcon) {
+        if (navLinks.classList.contains('mobile-active')) {
+          hamburgerIcon.classList.remove('fa-bars');
+          hamburgerIcon.classList.add('fa-xmark');
+        } else {
+          hamburgerIcon.classList.remove('fa-xmark');
+          hamburgerIcon.classList.add('fa-bars');
+        }
+      }
     }
 
     function openLightbox(idx) {
