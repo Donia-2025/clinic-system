@@ -1,22 +1,17 @@
 /* ==========================================================================
    Dr. Hisham Genedy — ENT & Rhinoplasty Consultant
    Design system: "Consulting Room" — a quiet, confident clinical identity
-   built on deep pine, warm brass and stone, in place of the generic
-   teal-gradient / glass-card medical template.
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
-
 :root {
-  /* Core palette */
-  --ink: #12201d;              /* near-black, warm-toned */
-  --pine: #143d34;             /* primary — deep pine green */
-  --pine-deep: #0d2b24;        /* pressed / hover state */
-  --pine-tint: #eaf1ee;        /* pale wash for backgrounds */
-  --brass: #a97a3b;            /* accent — warm brass, used sparingly */
+  --ink: #12201d;
+  --pine: #143d34;
+  --pine-deep: #0d2b24;
+  --pine-tint: #eaf1ee;
+  --brass: #a97a3b;
   --brass-tint: #f8efe0;
-  --stone: #f6f5f2;            /* page background, warm stone-white */
-  --paper: #ffffff;            /* card surface */
-  --line: #e3e0d8;             /* hairline borders */
+  --stone: #f6f5f2;
+  --paper: #ffffff;
+  --line: #e3e0d8;
   --text-main: #1c2622;
   --text-muted: #667069;
 
@@ -53,7 +48,6 @@ body[dir="rtl"] {
   font-family: 'Tajawal', var(--font-body);
 }
 
-/* Subtle fixed texture instead of a blurred stock photo wash */
 body::before {
   content: "";
   position: fixed;
@@ -64,7 +58,6 @@ body::before {
   z-index: -1;
 }
 
-/* Page sections */
 .container {
   padding: 48px 44px;
   background: var(--paper);
@@ -116,9 +109,7 @@ body[dir="rtl"] h4 {
   margin: 0 auto 34px;
 }
 
-/* ==========================================================================
-   Header / Navbar
-   ========================================================================== */
+/* Header / Navbar */
 header {
   position: sticky;
   top: 0;
@@ -156,8 +147,14 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  overflow: hidden;
   flex-shrink: 0;
+}
+
+.logo-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .nav-logo-sub {
@@ -242,9 +239,7 @@ header {
   cursor: pointer;
 }
 
-/* ==========================================================================
-   Hero
-   ========================================================================== */
+/* Hero Section */
 .hero-wrapper {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -403,12 +398,12 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
 }
 
 .hero-image-card i { color: var(--brass); font-size: 1.3rem; }
-.hero-image-card strong { display: block; font-size: 0.9rem; }
-.hero-image-card span { font-size: 0.75rem; color: var(--text-muted); }
+.hero-image-card strong { display: block; font-size: 0.9rem; text-align: left; }
+body[dir="rtl"] .hero-image-card strong { text-align: right; }
+.hero-image-card span { font-size: 0.75rem; color: var(--text-muted); display: block; text-align: left; }
+body[dir="rtl"] .hero-image-card span { text-align: right; }
 
-/* ==========================================================================
-   Cards
-   ========================================================================== */
+/* Cards & Grids */
 .glass-card {
   background: var(--paper);
   border-radius: var(--radius-md);
@@ -417,7 +412,6 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
   transition: var(--transition);
 }
 
-/* Services */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -453,7 +447,6 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
 .service-card h4 { margin-bottom: 8px; font-size: 1.05rem; }
 .service-card p { color: var(--text-muted); font-size: 0.94rem; }
 
-/* Publication / certificate items */
 .pub-card { border-inline-start: 3px solid var(--brass); }
 .pub-card h4 { font-size: 1.05rem; margin-bottom: 4px; }
 .pub-card p { color: var(--text-muted); font-size: 0.88rem; }
@@ -468,7 +461,6 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
   gap: 20px;
 }
 
-/* Gallery */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -487,7 +479,6 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
 
 .gallery-grid img:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
 
-/* Instructions */
 .instructions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -499,7 +490,6 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
 .instruction-card h4 { color: var(--pine); font-size: 1.12rem; margin-bottom: 12px; }
 .instruction-card ul { padding-inline-start: 18px; line-height: 1.85; color: var(--text-main); }
 
-/* Testimonials */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -507,36 +497,7 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
   margin-top: 24px;
 }
 
-.testimonial-box { position: relative; }
-
-.review-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-
-.review-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--pine-tint);
-}
-
-.review-name { font-weight: 700; font-size: 0.95rem; }
-
-.stars-rating { color: var(--brass); font-size: 0.95rem; }
-
-.review-comment {
-  color: var(--text-main);
-  line-height: 1.7;
-  font-size: 0.96rem;
-}
-
-/* ==========================================================================
-   Forms
-   ========================================================================== */
+/* Forms */
 .form-group { margin-bottom: 20px; }
 
 .form-group label {
@@ -545,7 +506,9 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
   margin-bottom: 7px;
   color: var(--ink);
   font-size: 0.92rem;
+  text-align: left;
 }
+body[dir="rtl"] .form-group label { text-align: right; }
 
 .form-control, input[type="text"], input[type="tel"], input[type="date"], select, textarea {
   width: 100%;
@@ -566,9 +529,7 @@ body[dir="rtl"] .hero-title { font-weight: 800; font-size: 2.5rem; }
   box-shadow: 0 0 0 3px rgba(20, 61, 52, 0.12);
 }
 
-/* ==========================================================================
-   Floating music widget
-   ========================================================================== */
+/* Floating music widget */
 .music-player {
   position: fixed;
   bottom: 22px;
@@ -603,9 +564,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   color: var(--text-main);
 }
 
-/* ==========================================================================
-   Footer
-   ========================================================================== */
+/* Footer */
 .site-footer {
   background: var(--ink);
   color: rgba(255, 255, 255, 0.85);
@@ -623,9 +582,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   opacity: 0.6;
 }
 
-/* ==========================================================================
-   Lightbox
-   ========================================================================== */
+/* Lightbox */
 .lightbox-overlay {
   display: none;
   position: fixed;
@@ -644,11 +601,9 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   box-shadow: var(--shadow-lg);
 }
 
-/* ==========================================================================
-   Responsive
-   ========================================================================== */
+/* Responsive Design / Media Queries */
 @media (max-width: 900px) {
-  .container { padding: 34px 22px; }
+  .container { padding: 24px 16px; width: 95%; margin: 15px auto; }
 
   .hero-wrapper {
     grid-template-columns: 1fr;
@@ -659,7 +614,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
     justify-content: center;
   }
 
-  .hero-subtitle { max-width: none; margin-inline: auto 28px; }
+  .hero-subtitle { max-width: none; margin-inline: auto; }
 
   .nav-links {
     position: fixed;
@@ -683,9 +638,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   .hamburger { display: block; }
 }
 
-/* ==========================================================================
-   Print stylesheet
-   ========================================================================== */
+/* Print stylesheet */
 @media print {
   header, .site-footer, .btn-lang, .hamburger, .hero-actions, .btn-book-nav, .music-player {
     display: none !important;
@@ -693,7 +646,7 @@ body[dir="rtl"] .music-player { padding: 8px 8px 8px 16px; }
   .container {
     box-shadow: none !important;
     border: none !important;
-    width: 100% | !important;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
   }
