@@ -1,7 +1,7 @@
-// حالة اللغة الحالية (افتراضياً الإنجليزية أو حسب تفضيلك)
+// حالة اللغة الحالية
 let isArabic = false;
 
-// دالة التنقل بين الصفحات (Show / Hide Pages)
+// دالة التنقل بين الصفحات
 function showPage(pageId) {
   const pages = document.querySelectorAll('main > div');
   pages.forEach(page => {
@@ -32,7 +32,7 @@ function showPage(pageId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// دالة تبديل اللغة (عربي / إنجليزي)
+// دالة تبديل اللغة
 function toggleLanguage() {
   isArabic = !isArabic;
   const htmlTag = document.documentElement;
@@ -58,7 +58,7 @@ function toggleLanguage() {
   });
 }
 
-// دالة تفعيل قائمة الموبايل الجانبية
+// دالة تفعيل قائمة الموبايل
 function toggleMobileMenu() {
   const navLinks = document.getElementById('navLinks');
   if (navLinks) {
@@ -78,7 +78,7 @@ function checkCustomTime(selectElement) {
   }
 }
 
-// دالة فتح وإغلاق الأسئلة الشائعة (FAQ Accordion)
+// دالة فتح وإغلاق الأسئلة الشائعة
 function toggleFaq(element) {
   const answer = element.querySelector('.faq-answer');
   const icon = element.querySelector('.faq-icon');
@@ -92,8 +92,8 @@ function toggleFaq(element) {
   }
 }
 
-// ===== رابط شيت التقييمات الجديد =====
-const reviewsSheetUrl = "https://script.google.com/macros/s/AKfycbwPEI_YL4J2kmobWWcodLj8-bZBIpaN2sHDXZVVTknatPduVugA1CA6TL31Aw6T14mX/exec";
+// ===== نظام التقييمات المتصل بشيت جوجل الجديد =====
+const reviewsSheetUrl = "https://script.google.com/macros/s/AKfycbx94jwyu8kqTGX-LVbk3uGsyIvOiMupFuHjLEvH-9W8-3kHw3uDBBN7VEHRca8UxhZ_/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
@@ -107,15 +107,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const rating = document.getElementById('reviewRating').value;
       const comment = document.getElementById('reviewComment').value;
 
-      const queryString = `?name=${encodeURIComponent(name)}&rating=${encodeURIComponent(rating)}&comment=${encodeURIComponent(comment)}`;
-      
-      fetch(reviewsSheetUrl + queryString, { mode: 'no-cors' })
-        .then(() => {
-          reviewForm.reset();
-          alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح وعرضه.' : 'Thank you! Your review has been added and displayed successfully.');
-          setTimeout(loadReviews, 2500); // تحديث القائمة بعد ثوانٍ لتظهر البيانات المقروءة من الشيت
-        })
-        .catch(error => console.log('Review Submit Error:', error));
+      const formData = new URLSearchParams();
+      formData.append('name', name);
+      formData.append('rating', rating);
+      formData.append('comment', comment);
+
+      fetch(reviewsSheetUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).then(() => {
+        reviewForm.reset();
+        alert(isArabic ? 'شكراً لك! تم إرسال تقييمك وسيظهر قريباً.' : 'Thank you! Your review has been submitted.');
+        setTimeout(loadReviews, 2500);
+      }).catch(error => console.log('Review Error:', error));
     });
   }
 });
@@ -133,7 +138,6 @@ function loadReviews() {
       }
 
       container.innerHTML = '';
-      // عكس الترتيب لتظهر أحدث التقييمات في الأعلى
       reviews.reverse().forEach(rev => {
         let stars = '★'.repeat(parseInt(rev.rating) || 5) + '☆'.repeat(5 - (parseInt(rev.rating) || 5));
         const card = document.createElement('div');
@@ -155,7 +159,7 @@ function loadReviews() {
     });
 }
 
-// دالة إرسال الحجز لشيت جوجل للحجوزات وتوجيه المستخدم للواتساب معاً
+// ===== نظام الحجوزات المتصل بشيت الحجوزات والواتساب =====
 function sendBookingWhatsApp(event) {
   event.preventDefault();
   
@@ -174,15 +178,24 @@ function sendBookingWhatsApp(event) {
     }
   }
 
-  // ===== رابط شيت جوجل الخاص بالحجوزات =====
   const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzGSNPJcKhWdo6NP_AzTbAYLQsmo6ox1cqOTmRwD4V5CduOw_xQg3GiHjKnnvVbDhd1LQ/exec"; 
 
-  // إرسال بيانات الحجز في الخلفية لتسجيلها في الشيت
-  const queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&country=${encodeURIComponent(country)}&time=${encodeURIComponent(time)}&date=${encodeURIComponent(date)}&consultant=${encodeURIComponent(consultationType)}&complaint=${encodeURIComponent(complaint)}`;
-  
-  fetch(googleSheetUrl + queryString, { mode: 'no-cors' }).catch(e => console.log('Sheet Error:', e));
+  const formData = new URLSearchParams();
+  formData.append('name', name);
+  formData.append('phone', phone);
+  formData.append('country', country);
+  formData.append('time', time);
+  formData.append('date', date);
+  formData.append('consultant', consultationType);
+  formData.append('complaint', complaint);
 
-  // ===== فتح واتساب بالرسالة المنسقة فوراً =====
+  fetch(googleSheetUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  }).catch(e => console.log('Booking Error:', e));
+
+  // فتح الواتساب
   const clinicWhatsAppNumber = "966560533284";
   const message = `مرحباً، أرغب في حجز موعد جديد في عيادة د. هشام جنيدي:
   
@@ -200,7 +213,7 @@ function sendBookingWhatsApp(event) {
   window.open(whatsappUrl, '_blank');
 }
 
-// مشغل الموسيقى الخلفي للعيادة
+// مشغل الموسيقى
 function toggleMusic() {
   const music = document.getElementById('background-music');
   const icon = document.getElementById('music-icon');
@@ -219,7 +232,7 @@ function toggleMusic() {
   }
 }
 
-// فتح صور المعرض (Lightbox)
+// معرض الصور
 function openLightbox(index) {
   const images = [
     "https://i.postimg.cc/PqScW0T4/IMG-20250411-WA0014.jpg",
