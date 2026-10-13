@@ -156,7 +156,7 @@ function loadReviews() {
   });
 }
 
-// دالة إرسال الحجز لشيت جوجل وتوجيه المستخدم للواتساب معاً
+// دالة إرسال الحجز لشيت جوجل وتوجيه المستخدم للواتساب معاً بالطريقة المضمونة
 function sendBookingWhatsApp(event) {
   event.preventDefault();
   
@@ -175,25 +175,15 @@ function sendBookingWhatsApp(event) {
     }
   }
 
-  // ===== (1) إرسال البيانات إلى شيت جوجل الخاص بكِ بالرابط الصحيح =====
+  // ===== رابط شيت جوجل الخاص بكِ =====
   const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzGSNPJcKhWdo6NP_AzTbAYLQsmo6ox1cqOTmRwD4V5CduOw_xQg3GiHjKnnvVbDhd1LQ/exec"; 
 
-  const formData = new URLSearchParams();
-  formData.append('name', name);
-  formData.append('phone', phone);
-  formData.append('country', country);
-  formData.append('time', time);
-  formData.append('date', date);
-  formData.append('consultant', consultationType);
-  formData.append('complaint', complaint);
+  // إرسال البيانات في الخلفية لتسجيلها في الشيت
+  const queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&country=${encodeURIComponent(country)}&time=${encodeURIComponent(time)}&date=${encodeURIComponent(date)}&consultant=${encodeURIComponent(consultationType)}&complaint=${encodeURIComponent(complaint)}`;
+  
+  fetch(googleSheetUrl + queryString, { mode: 'no-cors' }).catch(e => console.log('Sheet Error:', e));
 
-  fetch(googleSheetUrl, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: formData
-  }).catch(error => console.log('Google Sheet Error:', error));
-
-  // ===== (2) فتح واتساب بالرسالة المنسقة =====
+  // ===== فتح واتساب بالرسالة المنسقة فوراً =====
   const clinicWhatsAppNumber = "966560533284";
   const message = `مرحباً، أرغب في حجز موعد جديد في عيادة د. هشام جنيدي:
   
