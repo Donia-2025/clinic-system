@@ -139,23 +139,25 @@ function loadReviews() {
         
         const card = document.createElement('div');
         card.className = 'glass-card review-card';
-        // تنسيق محسن ومظهر جمالي للبطاقة
-        card.style.cssText = 'background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.05); padding: 20px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); transition: transform 0.3s ease;';
+        // تصميم راقي ونظيف جداً يعطي طابعاً احترافياً
+        card.style.cssText = 'background: #ffffff; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); transition: all 0.3s ease;';
         
         card.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 35px; height: 35px; background: var(--primary-color, #10b981); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #0f766e, #14b8a6); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(20, 184, 166, 0.2);">
                 ${rev.name ? rev.name.charAt(0).toUpperCase() : 'U'}
               </div>
-              <strong style="font-size: 1.05rem; color: #2d3748;">${rev.name}</strong>
+              <div>
+                <strong style="font-size: 1.05rem; color: #1e293b; display: block; margin-bottom: 2px;">${rev.name}</strong>
+                <span style="font-size: 0.75rem; color: #94a3b8;">${rev.date}</span>
+              </div>
             </div>
-            <span style="color: #f59e0b; font-size: 1rem; letter-spacing: 2px;">${stars}</span>
+            <div style="color: #f59e0b; font-size: 1.1rem; letter-spacing: 1px; background: #fffbeb; padding: 4px 10px; border-radius: 20px; border: 1px solid #fef3c7;">
+              ${stars}
+            </div>
           </div>
-          <p style="margin: 10px 0 15px 0; font-size: 1rem; color: #4a5568; line-height: 1.6;">${rev.comment}</p>
-          <div style="display: flex; justify-content: flex-end; align-items: center;">
-            <span style="font-size: 0.8rem; color: #a0aec0; background: rgba(0,0,0,0.03); padding: 3px 8px; border-radius: 6px;">${rev.date}</span>
-          </div>
+          <p style="margin: 0; font-size: 1rem; color: #475569; line-height: 1.7; padding-right: 5px;">${rev.comment}</p>
         `;
         container.appendChild(card);
       });
@@ -240,6 +242,7 @@ function openLightbox(index) {
     "https://i.postimg.cc/65K0QYN5/Whats-App-Image-2025-04-11-at-01-28-57-763a52fa.jpg"
   ];
   
+  ,
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   
