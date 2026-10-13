@@ -92,8 +92,8 @@ function toggleFaq(element) {
   }
 }
 
-// ===== نظام إدارة وعرض تقييمات المرضى المرتبط بشيت التقييمات الجديد =====
-const reviewsSheetUrl = "https://script.google.com/macros/s/AKfycbyZqmLV963kSDlhsUJ0moWxf5-ZFBE7DWaZOwzzlsjmoJ2kXesZW54fWeQWlzAMX7RI/exec";
+// ===== رابط شيت التقييمات الجديد =====
+const reviewsSheetUrl = "https://script.google.com/macros/s/AKfycbwPEI_YL4J2kmobWWcodLj8-bZBIpaN2sHDXZVVTknatPduVugA1CA6TL31Aw6T14mX/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => {
           reviewForm.reset();
           alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح وعرضه.' : 'Thank you! Your review has been added and displayed successfully.');
-          setTimeout(loadReviews, 2000); // تحديث القائمة بعد ثانيتين لجلب التقييم من الشيت
+          setTimeout(loadReviews, 2500); // تحديث القائمة بعد ثوانٍ لتظهر البيانات المقروءة من الشيت
         })
         .catch(error => console.log('Review Submit Error:', error));
     });
@@ -133,7 +133,7 @@ function loadReviews() {
       }
 
       container.innerHTML = '';
-      // عكس الترتيب لكي تظهر أحدث التقييمات في الأعلى
+      // عكس الترتيب لتظهر أحدث التقييمات في الأعلى
       reviews.reverse().forEach(rev => {
         let stars = '★'.repeat(parseInt(rev.rating) || 5) + '☆'.repeat(5 - (parseInt(rev.rating) || 5));
         const card = document.createElement('div');
