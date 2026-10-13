@@ -1,7 +1,7 @@
-// حالة اللغة الحالية
+// حالة اللغة الحالية (افتراضياً الإنجليزية أو حسب تفضيلك)
 let isArabic = false;
 
-// دالة التنقل بين الصفحات
+// دالة التنقل بين الصفحات (Show / Hide Pages)
 function showPage(pageId) {
   const pages = document.querySelectorAll('main > div');
   pages.forEach(page => {
@@ -32,7 +32,7 @@ function showPage(pageId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// دالة تبديل اللغة
+// دالة تبديل اللغة (عربي / إنجليزي)
 function toggleLanguage() {
   isArabic = !isArabic;
   const htmlTag = document.documentElement;
@@ -58,7 +58,7 @@ function toggleLanguage() {
   });
 }
 
-// دالة تفعيل قائمة الموبايل
+// دالة تفعيل قائمة الموبايل الجانبية
 function toggleMobileMenu() {
   const navLinks = document.getElementById('navLinks');
   if (navLinks) {
@@ -78,7 +78,7 @@ function checkCustomTime(selectElement) {
   }
 }
 
-// دالة فتح وإغلاق الأسئلة الشائعة
+// دالة فتح وإغلاق الأسئلة الشائعة (FAQ Accordion)
 function toggleFaq(element) {
   const answer = element.querySelector('.faq-answer');
   const icon = element.querySelector('.faq-icon');
@@ -128,7 +128,7 @@ function loadReviews() {
     .then(response => response.json())
     .then(reviews => {
       if (!reviews || reviews.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">لا توجد تقييمات حتى الآن. كن أول من يقييم!</p>';
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">لا توجد تقييمات حتى الآن. كن أول من يقييم!</p>';
         return;
       }
 
@@ -136,16 +136,26 @@ function loadReviews() {
       // عكس الترتيب لكي تظهر أحدث التقييمات في الأعلى
       reviews.reverse().forEach(rev => {
         let stars = '★'.repeat(parseInt(rev.rating) || 5) + '☆'.repeat(5 - (parseInt(rev.rating) || 5));
+        
         const card = document.createElement('div');
         card.className = 'glass-card review-card';
-        card.style.cssText = 'padding: 15px; margin-bottom: 12px; border-radius: 12px;';
+        // تنسيق محسن ومظهر جمالي للبطاقة
+        card.style.cssText = 'background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.05); padding: 20px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); transition: transform 0.3s ease;';
+        
         card.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="font-size: 1rem;">${rev.name}</strong>
-            <span style="color: #f39c12; font-size: 0.95rem;">${stars}</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 35px; height: 35px; background: var(--primary-color, #10b981); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem;">
+                ${rev.name ? rev.name.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <strong style="font-size: 1.05rem; color: #2d3748;">${rev.name}</strong>
+            </div>
+            <span style="color: #f59e0b; font-size: 1rem; letter-spacing: 2px;">${stars}</span>
           </div>
-          <p style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">${rev.comment}</p>
-          <span style="font-size: 0.75rem; color: #888; display: block; margin-top: 8px;">${rev.date}</span>
+          <p style="margin: 10px 0 15px 0; font-size: 1rem; color: #4a5568; line-height: 1.6;">${rev.comment}</p>
+          <div style="display: flex; justify-content: flex-end; align-items: center;">
+            <span style="font-size: 0.8rem; color: #a0aec0; background: rgba(0,0,0,0.03); padding: 3px 8px; border-radius: 6px;">${rev.date}</span>
+          </div>
         `;
         container.appendChild(card);
       });
