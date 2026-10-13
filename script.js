@@ -3,19 +3,20 @@ let isArabic = false;
 
 // دالة التنقل بين الصفحات (Show / Hide Pages)
 function showPage(pageId) {
-  const pages = document.querySelectorAll('main > div');
+  // إخفاء جميع محتويات الـ main
+  const pages = document.querySelectorAll('main > section, main > div');
   pages.forEach(page => {
-    page.classList.add('hidden');
-    page.classList.remove('active-page');
+    page.style.display = 'none';
   });
 
+  // إظهار الصفحة المستهدفة فقط
   const targetPage = document.getElementById(pageId);
   if (targetPage) {
-    targetPage.classList.remove('hidden');
-    targetPage.classList.add('active-page');
+    targetPage.style.display = 'block';
   }
 
-  const navLinks = document.querySelectorAll('.nav-links a');
+  // تحديث الـ active class في أزرار التنقل
+  const navLinks = document.querySelectorAll('.nav-links a, nav a');
   navLinks.forEach(link => {
     link.classList.remove('active');
     const onclickAttr = link.getAttribute('onclick');
@@ -24,6 +25,7 @@ function showPage(pageId) {
     }
   });
 
+  // إغلاق قائمة الموبايل إن كانت مفتوحة
   const navMenu = document.getElementById('navLinks');
   if (navMenu) {
     navMenu.classList.remove('mobile-active');
@@ -69,12 +71,15 @@ function toggleMobileMenu() {
 // دالة لإظهار خانة الوقت المخصص إذا تم اختيار "وقت أخري"
 function checkCustomTime(selectElement) {
   const customTimeGroup = document.getElementById('customTimeGroup');
+  if (!customTimeGroup) return;
   if (selectElement.value === 'وقت أخري') {
     customTimeGroup.style.display = 'block';
-    document.getElementById('custom-time').required = true;
+    const customTimeInput = document.getElementById('custom-time');
+    if (customTimeInput) customTimeInput.required = true;
   } else {
     customTimeGroup.style.display = 'none';
-    document.getElementById('custom-time').required = false;
+    const customTimeInput = document.getElementById('custom-time');
+    if (customTimeInput) customTimeInput.required = false;
   }
 }
 
@@ -83,12 +88,14 @@ function toggleFaq(element) {
   const answer = element.querySelector('.faq-answer');
   const icon = element.querySelector('.faq-icon');
   
-  if (answer.style.display === 'block') {
-    answer.style.display = 'none';
-    icon.style.transform = 'rotate(0deg)';
-  } else {
-    answer.style.display = 'block';
-    icon.style.transform = 'rotate(180deg)';
+  if (answer) {
+    if (answer.style.display === 'block') {
+      answer.style.display = 'none';
+      if (icon) icon.style.transform = 'rotate(0deg)';
+    } else {
+      answer.style.display = 'block';
+      if (icon) icon.style.transform = 'rotate(180deg)';
+    }
   }
 }
 
@@ -113,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => {
           reviewForm.reset();
           alert(isArabic ? 'شكراً لك! تم إضافة تقييمك بنجاح وعرضه.' : 'Thank you! Your review has been added and displayed successfully.');
-          setTimeout(loadReviews, 2000); // تحديث القائمة بعد ثانيتين لجلب التقييم من الشيت
+          setTimeout(loadReviews, 2000);
         })
         .catch(error => console.log('Review Submit Error:', error));
     });
@@ -133,13 +140,11 @@ function loadReviews() {
       }
 
       container.innerHTML = '';
-      // عكس الترتيب لكي تظهر أحدث التقييمات في الأعلى
       reviews.reverse().forEach(rev => {
         let stars = '★'.repeat(parseInt(rev.rating) || 5) + '☆'.repeat(5 - (parseInt(rev.rating) || 5));
         
         const card = document.createElement('div');
         card.className = 'glass-card review-card';
-        // تصميم راقي ونظيف جداً يعطي طابعاً احترافياً
         card.style.cssText = 'background: #ffffff; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); transition: all 0.3s ease;';
         
         card.innerHTML = `
@@ -186,15 +191,12 @@ function sendBookingWhatsApp(event) {
     }
   }
 
-  // ===== رابط شيت جوجل الخاص بالحجوزات =====
   const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzGSNPJcKhWdo6NP_AzTbAYLQsmo6ox1cqOTmRwD4V5CduOw_xQg3GiHjKnnvVbDhd1LQ/exec"; 
 
-  // إرسال بيانات الحجز في الخلفية لتسجيلها في الشيت
   const queryString = `?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&country=${encodeURIComponent(country)}&time=${encodeURIComponent(time)}&date=${encodeURIComponent(date)}&consultant=${encodeURIComponent(consultationType)}&complaint=${encodeURIComponent(complaint)}`;
   
   fetch(googleSheetUrl + queryString, { mode: 'no-cors' }).catch(e => console.log('Sheet Error:', e));
 
-  // ===== فتح واتساب بالرسالة المنسقة فوراً =====
   const clinicWhatsAppNumber = "966560533284";
   const message = `مرحباً، أرغب في حجز موعد جديد في عيادة د. هشام جنيدي:
   
@@ -217,17 +219,21 @@ function toggleMusic() {
   const music = document.getElementById('background-music');
   const icon = document.getElementById('music-icon');
   
-  if (music.paused) {
+  if (music && music.paused) {
     music.play().then(() => {
-      icon.classList.remove('fa-play');
-      icon.classList.add('fa-pause');
+      if (icon) {
+        icon.classList.remove('fa-play');
+        icon.classList.add('fa-pause');
+      }
     }).catch(e => {
       console.log("Audio autoplay restricted:", e);
     });
-  } else {
+  } else if (music) {
     music.pause();
-    icon.classList.remove('fa-pause');
-    icon.classList.add('fa-play');
+    if (icon) {
+      icon.classList.remove('fa-pause');
+      icon.classList.add('fa-play');
+    }
   }
 }
 
