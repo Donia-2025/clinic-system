@@ -92,7 +92,7 @@ function toggleFaq(element) {
   }
 }
 
-// ===== نظام إدارة وعرض تقييمات المرضى (Reviews) وتحديثها للجميع =====
+// ===== نظام إدارة وعرض تقييمات المرضى (Reviews) =====
 document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
 
@@ -112,9 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         date: new Date().toLocaleDateString('en-GB') 
       };
       
-      // جلب التقييمات الحالية أو إنشاء قائمة جديدة
       let reviews = JSON.parse(localStorage.getItem('clinicSharedReviews')) || [];
-      reviews.unshift(newReview); // إضافة التقييم الجديد في المقدمة ليظهر مباشرة للجميع
+      reviews.unshift(newReview);
       localStorage.setItem('clinicSharedReviews', JSON.stringify(reviews));
 
       reviewForm.reset();
@@ -129,10 +128,8 @@ function loadReviews() {
   const container = document.getElementById('reviewsContainer');
   if (!container) return;
 
-  // جلب التقييمات المشتركة
   let reviews = JSON.parse(localStorage.getItem('clinicSharedReviews'));
   
-  // إذا لم تكن موجودة، نضع تقييمات افتراضية أولية
   if (!reviews || reviews.length === 0) {
     reviews = [
       { name: "محمد أحمد", rating: "5", comment: "دكتور ممتاز جداً وخلوق، قمت بعملية تعديل الحاجز الأنفي والنتيجة رائعة.", date: "12/05/2026" },
@@ -178,17 +175,17 @@ function sendBookingWhatsApp(event) {
     }
   }
 
-  // ===== (1) إرسال البيانات إلى شيت جوجل (Google Sheets Web App URL) =====
-  const googleSheetUrl = "https://script.google.com/macros/s/AKfycby.../exec"; 
+  // ===== (1) إرسال البيانات إلى شيت جوجل الخاص بكِ بالرابط الصحيح =====
+  const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzGSNPJcKhWdo6NP_AzTbAYLQsmo6ox1cqOTmRwD4V5CduOw_xQg3GiHjKnnvVbDhd1LQ/exec"; 
 
   const formData = new URLSearchParams();
   formData.append('name', name);
   formData.append('phone', phone);
   formData.append('country', country);
-  formData.append('consultationType', consultationType);
-  formData.append('complaint', complaint);
-  formData.append('date', date);
   formData.append('time', time);
+  formData.append('date', date);
+  formData.append('consultant', consultationType);
+  formData.append('complaint', complaint);
 
   fetch(googleSheetUrl, {
     method: 'POST',
