@@ -3,20 +3,19 @@ let isArabic = false;
 
 // دالة التنقل بين الصفحات (Show / Hide Pages)
 function showPage(pageId) {
-  // إخفاء جميع محتويات الـ main
-  const pages = document.querySelectorAll('main > section, main > div');
+  const pages = document.querySelectorAll('main > div');
   pages.forEach(page => {
-    page.style.display = 'none';
+    page.classList.add('hidden');
+    page.classList.remove('active-page');
   });
 
-  // إظهار الصفحة المستهدفة فقط
   const targetPage = document.getElementById(pageId);
   if (targetPage) {
-    targetPage.style.display = 'block';
+    targetPage.classList.remove('hidden');
+    targetPage.classList.add('active-page');
   }
 
-  // تحديث الـ active class في أزرار التنقل
-  const navLinks = document.querySelectorAll('.nav-links a, nav a');
+  const navLinks = document.querySelectorAll('.nav-links a');
   navLinks.forEach(link => {
     link.classList.remove('active');
     const onclickAttr = link.getAttribute('onclick');
@@ -25,7 +24,6 @@ function showPage(pageId) {
     }
   });
 
-  // إغلاق قائمة الموبايل إن كانت مفتوحة
   const navMenu = document.getElementById('navLinks');
   if (navMenu) {
     navMenu.classList.remove('mobile-active');
@@ -99,10 +97,13 @@ function toggleFaq(element) {
   }
 }
 
-// ===== نظام إدارة وعرض تقييمات المرضى المرتبط بشيت التقييمات الجديد =====
+// ===== رابط شيت التقييمات =====
 const reviewsSheetUrl = "https://script.google.com/macros/s/AKfycbzNQRevxzEqFaiR7UQuBnc9PY-Eilved8Xx1WwuwFkLMZg3D_vQMyjBVN8JdZAOu3IO/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
+  // إظهار الصفحة الرئيسية افتراضياً عند تحميل الموقع حتى لا يظهر فارغاً
+  showPage('home');
+  
   loadReviews();
 
   const reviewForm = document.getElementById('reviewForm');
@@ -145,24 +146,24 @@ function loadReviews() {
         
         const card = document.createElement('div');
         card.className = 'glass-card review-card';
-        card.style.cssText = 'background: #ffffff; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); transition: all 0.3s ease;';
+        card.style.cssText = 'background: #ffffff; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 16px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);';
         
         card.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #0f766e, #14b8a6); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(20, 184, 166, 0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 38px; height: 38px; background: #0f766e; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem;">
                 ${rev.name ? rev.name.charAt(0).toUpperCase() : 'U'}
               </div>
               <div>
-                <strong style="font-size: 1.05rem; color: #1e293b; display: block; margin-bottom: 2px;">${rev.name}</strong>
+                <strong style="font-size: 1rem; color: #1e293b; display: block;">${rev.name}</strong>
                 <span style="font-size: 0.75rem; color: #94a3b8;">${rev.date}</span>
               </div>
             </div>
-            <div style="color: #f59e0b; font-size: 1.1rem; letter-spacing: 1px; background: #fffbeb; padding: 4px 10px; border-radius: 20px; border: 1px solid #fef3c7;">
+            <div style="color: #f59e0b; font-size: 1rem; letter-spacing: 1px;">
               ${stars}
             </div>
           </div>
-          <p style="margin: 0; font-size: 1rem; color: #475569; line-height: 1.7; padding-right: 5px;">${rev.comment}</p>
+          <p style="margin: 0; font-size: 0.95rem; color: #475569; line-height: 1.6;">${rev.comment}</p>
         `;
         container.appendChild(card);
       });
@@ -172,7 +173,7 @@ function loadReviews() {
     });
 }
 
-// دالة إرسال الحجز لشيت جوجل للحجوزات وتوجيه المستخدم للواتساب معاً
+// ===== دالة إرسال الحجز لشيت الحجوزات والواتساب =====
 function sendBookingWhatsApp(event) {
   event.preventDefault();
   
@@ -214,7 +215,7 @@ function sendBookingWhatsApp(event) {
   window.open(whatsappUrl, '_blank');
 }
 
-// مشغل الموسيقى الخلفي للعيادة
+// ===== مشغل الموسيقى الخلفي =====
 function toggleMusic() {
   const music = document.getElementById('background-music');
   const icon = document.getElementById('music-icon');
@@ -237,7 +238,7 @@ function toggleMusic() {
   }
 }
 
-// فتح صور المعرض (Lightbox)
+// ===== معرض الصور (Lightbox) =====
 function openLightbox(index) {
   const images = [
     "https://i.postimg.cc/PqScW0T4/IMG-20250411-WA0014.jpg",
